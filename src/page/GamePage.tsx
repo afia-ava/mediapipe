@@ -12,7 +12,7 @@ function GamePage() {
 
   return (
     <div style={{ padding: '20px', color: 'white' }}>
-      <h1 style={{ fontSize: '32px', marginBottom: '20px' }}>MediaPipe Pose Detection</h1>
+      <h1 style={{ fontSize: '32px', marginBottom: '20px' }}>Games</h1>
       
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '20px' }}>
         <div style={{ background: '#1a1a1a', padding: '20px', borderRadius: '8px' }}>
