@@ -1,48 +1,63 @@
 import { useState, useEffect } from 'react'
-import { getLeaderboard, type LeaderboardEntry } from '../lib/supabase'
+import { getLeaderboard, supabase, type LeaderboardEntry } from '../lib/supabase'
 
-function Leaderboard() {
-  const [entries, setEntries] = useState<LeaderboardEntry[]>([])
-  const [loading, setLoading] = useState(true)
+type Score = {
+  id: number;
+  name: string;
+  accuracy: number;
+  hightest_level: number;
+  created_at: string;
+}
 
-  useEffect(() => {
-    loadLeaderboard()
-  }, [])
+const loadScores = async (sortBy: "accuracy" | "highest_level", setScores: Function) => {
+  const {data, error } = await supabase
+    .from("scores")
+    .select("*")
+    .order(sortBy, {ascending: false})
+    .order("created_at", {ascending: true})
+    .limit(10);
 
-  const loadLeaderboard = async () => {
-    setLoading(true)
-    const data = await getLeaderboard()
-    setEntries(data)
-    setLoading(false)
+  console.log(data)
+
+  if (error) {
+    console.error("Error loading scores:", error.message);
+    return;
   }
 
-  if (loading) {
-    return <div>Loading leaderboard...</div>
+  setScores(data as Score[]);
+}
+
+
+export function Leaderboard() {
+  const [scores, setScores] = useState<Score[]>([]);
+  const [sortBy, setSortBy] = useState<"highest_level" | "accuracy">("highest_level")
+
+  useEffect(() => {
+    loadScores(sortBy, setScores)
+  }, [])
+
+  const switchSort = () => {
+    setSortBy(sortBy == "highest_level" ? "accuracy" : "highest_level");
+    loadScores(sortBy, setScores);
+  }
+
+  if (!scores.length) {
+    return <p className="meta">No scores available yet. Be the first to play!</p>;
   }
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h2>Leaderboard</h2>
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr>
-            <th style={{ textAlign: 'left', padding: '10px' }}>Rank</th>
-            <th style={{ textAlign: 'left', padding: '10px' }}>Player</th>
-            <th style={{ textAlign: 'right', padding: '10px' }}>Score</th>
-          </tr>
-        </thead>
-        <tbody>
-          {entries.map((entry, index) => (
-            <tr key={entry.id}>
-              <td style={{ padding: '10px' }}>{index + 1}</td>
-              <td style={{ padding: '10px' }}>{entry.player_name}</td>
-              <td style={{ textAlign: 'right', padding: '10px' }}>{entry.score}</td>
-            </tr>
+    <div className="leaderboard">
+      <h3>LEADERBOARD</h3>
+      <button
+        onClick={switchSort}
+        className="switch-sort-button">Sort by {sortBy == "highest_level" ? "Highest SImilarity" : "Highest Level Reached"} instead</button>
+        <ol>
+          {scores.map((s) => (
+            <li key={s.id}>
+              <strong>{s.name}</strong> -- {sortBy == "accuracy" ? `${s.accuracy.toString()}% Highest Similarity` : `${s.hightest_level.toString()}`}
+            </li>
           ))}
-        </tbody>
-      </table>
+        </ol>
     </div>
-  )
+  );
 }
-
-export default Leaderboard

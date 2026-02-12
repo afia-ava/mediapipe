@@ -20,7 +20,7 @@ mediapipe/
 │   ├── assets/          # Images, poses, and resources
 │   ├── game/            # Game components
 │   │   ├── Leaderboard.tsx
-│   │   └── StatuesqueGame.tsx
+│   │   └── PoseGame.tsx
 │   ├── lib/             # External service clients
 │   │   └── supabase.ts
 │   ├── page/            # Page-level components
