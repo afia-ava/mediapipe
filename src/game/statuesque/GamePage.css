@@ -1,153 +1,67 @@
-/* ========================================
-   ANIMATIONS
-   ======================================== */
-
-@keyframes pose-pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.5);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
 .game-page {
-  font-family: 'Crimson Text', serif;
-  color: var(--text-dark);
-  min-height: 100vh;
-  min-width: 100vw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
+  @apply flex min-h-screen w-screen items-center justify-center font-serif text-text-dark;
   background: radial-gradient(ellipse at center, #4a4238 0%, #2c2416 100%);
 }
+
 .game-header {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-  color: var(--gold);
-  font-family: 'Cinzel', serif;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  @apply w-full flex justify-between items-center mb-6 text-gold font-serif [text-shadow:2px_2px_4px_rgba(0,0,0,0.5)];
 }
 
 .game-main {
-  width: 100%;
-  height:100%;
-  max-width: 1100px;
-  display: flex;
-  gap: 28px;
-  align-items: flex-start;
+  @apply w-full h-full max-w-[1100px] flex gap-7 items-start;
 }
 
 .left {
-  flex: 1 1 640px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @apply flex-[1_1_640px] flex items-center justify-center;
 }
 
 .right {
-  flex: 0 0 360px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  @apply flex-[0_0_360px] flex flex-col gap-4;
 }
 
 .detector-area {
-  width: 100%;
-  position: relative;
+  @apply w-full relative;
 }
 
 .detector-area video {
-  border-radius: 2px;
-  max-width: 100%;
-  display: block;
-  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8), 0 8px 16px rgba(0, 0, 0, 0.5);
-  border: 8px solid var(--bronze-dark);
+  @apply rounded-sm max-w-full block border-8 border-bronze-dark shadow-[inset_0_0_20px_rgba(0,0,0,0.8),0_8px_16px_rgba(0,0,0,0.5)];
 }
 
 .video-placeholder {
-  background: linear-gradient(135deg, var(--stone-dark) 0%, var(--bronze-dark) 100%);
-  height: 360px;
-  width: 480px;
-  border-radius: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--papyrus-light);
-  border: 8px solid var(--bronze-dark);
-  font-family: 'Cinzel', serif;
-  font-size: 18px;
-  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8), 0 8px 16px rgba(0, 0, 0, 0.5);
+  @apply flex items-center justify-center w-[480px] h-[360px] border-8 border-bronze-dark rounded-sm
+    text-papyrus-light bg-[linear-gradient(135deg,var(--stone-dark)_0%,var(--bronze-dark)_100%)]
+      shadow-[inset_0_0_20px_rgba(0,0,0,0.8),0_8px_16px_rgba(0,0,0,0.5)];
 }
 
 .instructions {
-  margin-top: 12px;
-  color: var(--papyrus-medium);
-  font-size: 14px;
-  text-align: center;
-  font-style: italic;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-  letter-spacing: 0.5px;
+  @apply mt-3 text-center italic text-sm text-papyrus-medium tracking-[0.5px] [text-shadow:1px_1px_2px_rgba(0,0,0,0.7)];
 }
 
 .controls {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+  @apply flex gap-2 flex-wrap;
 }
 
 .controls button {
-  padding: 8px 16px;
-  border-radius: 0;
-  border: 2px solid var(--bronze-medium);
-  background: linear-gradient(135deg, var(--papyrus-medium) 0%, var(--papyrus-light) 100%);
-  color: var(--text-dark);
-  cursor: pointer;
-  font-family: 'Cinzel', serif;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  @apply px-4 py-2 border-2 border-bronze-medium rounded-sm bg-gradient-to-br from-papyrus-medium to-papyrus-light
+    text-text-dark cursor-pointer font-semibold transition-all duration-300
+    shadow-[0_4px_8px_rgba(0,0,0,0.3)];
 }
 
 .controls button:hover {
-  background: linear-gradient(135deg, var(--papyrus-light) 0%, var(--gold) 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(212, 175, 55, 0.3);
+  @apply bg-gradient-to-br from-gold to-gold-dark transform translate-y-[-2px] shadow-[0_6px_12px_rgba(212,175,55,0.4)];
 }
+
 
 .status .message {
-  font-weight: 600;
-  color: var(--gold);
-  font-family: 'Cinzel', serif;
-}
-
-.central-box {
-  background: none;
-  border: 0;
-  box-shadow: none;
-  border-radius: 0;
-  backdrop-filter: none;
+  @apply font-semibold text-gold;
 }
 
 .intro-overlay {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.85);
-  z-index: 9999;
-  backdrop-filter: blur(2px);
+  @apply fixed inset-0 flex items-center justify-center bg-black/85 z-[9999] backdrop-blur-[2px];
 }
 
 .intro-content {
+  @apply w-92vw max-w-[]
   width: 92vw;
   max-width: 1400px;
   height: 86vh;
