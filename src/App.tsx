@@ -1,12 +1,11 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import './App.css'
-import GamePage from './page/GamePage'
+import HomePage from './page/HomePage'
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<GamePage />}></Route>
+        <Route path="/" element={<HomePage />}></Route>
       </Routes>
     </BrowserRouter>
       

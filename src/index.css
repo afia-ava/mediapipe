@@ -1,15 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Lexend:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800|Lexend:wght@100..900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  html, body {
-    @apply bg-gradient-to-br from-stone-dark to-text-dark;
-    @apply font-serif text-text-dark min-h-screen;
-    margin: 0;
-    padding: 0;
-  }
+    html, body {
+        @apply bg-gradient-to-br from-stone-dark to-text-dark;
+        @apply font-serif text-text-dark min-h-screen;
+        margin: 0;
+        padding: 0;
+    }
 }
-

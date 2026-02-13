@@ -1,7 +1,6 @@
 import { useState } from "react";
-import "./GamePage.css";
 import PoseGame from "../game/PoseGame";
-import { Leaderboard } from "../game/Leaderboard"; // ⬅ add this
+import { Leaderboard } from "../game/Leaderboard"; 
 
 
 export default function GamePage() {
