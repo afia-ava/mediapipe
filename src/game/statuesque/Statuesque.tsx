@@ -1,6 +1,6 @@
 import { useState } from "react";
-import PoseGame from "../game/statuesque/PoseGame";
-import { Leaderboard } from "../game/Leaderboard"; 
+import PoseGame from "./PoseGame";
+import { Leaderboard } from "./Leaderboard"; 
 
 
 export default function GamePage() {

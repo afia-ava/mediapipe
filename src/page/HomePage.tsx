@@ -9,9 +9,9 @@ export default function HomePage() {
             color: "from-gold to-bronze-light"
         },
         {
-            tile: "Game 2",
-            description: "Still deciding",
-            route: "/game2",
+            title: "Flappy Bird",
+            description: "Navigate through obstacles as a flying bird",
+            route: "/flappy-bird",
             color: "from-papyrus-medium to papyrus-dark"
         },
         {
@@ -36,7 +36,7 @@ export default function HomePage() {
                     <Link
                         key={game.title}
                         to={game.route}
-                        className={`block p-6 rounded-lg shadow-lg text-center text-white font-serif bg-gradient-to-br ${game.color} transform transition-transform hover:scale-105`}
+                        className={`block p-6 rounded-lg shadow-lg text-center text-white font-serif bg-gradient-to-br ${game.color} transform transition-transform hover:scale-105 cursor-pointer`}
                     >
                         <h2 className="text-3xl font-bold mb-2">
                             {game.title}
@@ -44,9 +44,9 @@ export default function HomePage() {
                         <p className="text-papyrus-light mb-4 font-serif">
                             {game.description}
                         </p>
-                        <button className="bg-gold text-stone-dark font-bold py-2 px-4 rounded-full hover:bg-gold-light transition-colors">
+                        <div className="bg-gold text-stone-dark font-bold py-2 px-4 rounded-full hover:bg-gold-light transition-colors inline-block">
                             Play
-                        </button>
+                        </div>
                     </Link>
                 ))}
             </div>
