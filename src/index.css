@@ -5,6 +5,20 @@
 @tailwind utilities;
 
 @layer base {
+    :root {
+        --gold: theme('colors.gold');
+        --gold-dark: theme('colors.gold-dark');
+        --bronze-dark: theme('colors.bronze-dark');
+        --bronze-medium: theme('colors.bronze-medium');
+        --bronze-light: theme('colors.bronze-light');
+        --papyrus-light: theme('colors.papyrus-light');
+        --papyrus-medium: theme('colors.papyrus-medium');
+        --papyrus-dark: theme('colors.papyrus-dark');
+        --stone-dark: theme('colors.stone-dark');
+        --text-dark: theme('colors.text-dark');
+        --red-ochre: theme('colors.red-ochre');
+    }
+
     html, body {
         @apply bg-gradient-to-br from-stone-dark to-text-dark;
         @apply font-serif text-text-dark min-h-screen;

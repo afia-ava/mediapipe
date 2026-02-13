@@ -57,1124 +57,568 @@
 }
 
 .intro-overlay {
-  @apply fixed inset-0 flex items-center justify-center bg-black/85 z-[9999] backdrop-blur-[2px];
+  @apply fixed insert-0 flex items-center justify-center bg-black/85 z-[9999] backdrop-blur-[2px];
 }
 
 .intro-content {
-  @apply w-92vw max-w-[]
-  width: 92vw;
-  max-width: 1400px;
-  height: 86vh;
-  background: linear-gradient(135deg, rgba(212, 180, 150, 0.95) 0%, rgba(232, 212, 184, 0.95) 100%);
-  border-radius: 0;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  box-shadow: 
-    inset 0 0 40px rgba(0, 0, 0, 0.2),
-    0 20px 60px rgba(0, 0, 0, 0.8),
-    0 0 0 3px var(--bronze-dark);
-  border: 3px solid var(--bronze-dark);
-  position: relative;
-  overflow: hidden;
+  @apply flex flex-col items-center gap-2 relative overflow-hidden p-5 rounded-none
+    w-[92vw] max-w-[1400px] h-[86vh] 
+    bg-gradient-to-br from-papyrus-medium/95 to to-papyrus-light/95
+    border-[3px] border-bronze-dark 
+    shadow-[inset_0_0_40px_rgba(0,0,0,0.2),0_20px_60px_rgba(0,0,0,0.8),0_0_0_3px_var(--bronze-dark)];
 }
 
 .intro-content::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: 
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 2px,
-      rgba(0, 0, 0, 0.02) 2px,
-      rgba(0, 0, 0, 0.02) 4px
-    ),
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0, 0, 0, 0.02) 2px,
-      rgba(0, 0, 0, 0.02) 4px
-    );
-  pointer-events: none;
+  @apply content-[''] absolute inset-0 bg-[linear-gradient(90deg,transparent,transparent_2px,rgba(0,0,0,0.02)_2px,rgba(0,0,0,0.02)_4px),linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.02)_2px,rgba(0,0,0,0.02)_4px)] pointer-events-none;
 }
 
 .intro-image {
-  width: 100%;
-  height: calc(86vh - 84px);
-  object-fit: contain;
-  border-radius: 0;
-  box-shadow: 
-    inset 0 0 20px rgba(0, 0, 0, 0.3),
-    0 8px 20px rgba(0, 0, 0, 0.5);
-  border: 2px solid var(--bronze-dark);
+  @apply w-full h-[calc(86vh-84px)] object-contain rounded-none shadow-[inset_0_0_20px_rgba(0,0,0,0.3),0_8px_20px_rgba(0,0,0,0.5)] border-2 border-bronze-dark;
 }
 
 @media (max-width: 1000px) {
   .intro-content {
-    width: 96vw;
-    height: 78vh;
-  }
-  .intro-image {
-    height: calc(78vh - 72px);
+    @apply w-[96vw] h-[78vh];
   }
 }
 
 @media (max-width: 640px) {
   .intro-content {
-    width: 96%;
-    height: 66vh;
-  }
-  .intro-image {
-    height: calc(66vh - 64px);
+    @apply w-[96vw] h-[66vh];
   }
 }
 
 .intro-actions {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  gap: 12px;
+  @apply mt-4 flex justify-center gap-3;
 }
 
 .intro-next {
-  background: linear-gradient(135deg, var(--papyrus-light) 0%, var(--gold) 100%);
-  color: var(--text-dark);
-  border: 0;
-  padding: 12px 24px;
-  border-radius: 0;
-  font-weight: 700;
-  font-family: 'Cinzel', serif;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 14px;
+  @apply bg-gradient-to-br from-papyrus-light to-gold color-text-dark 
+  px-6 py-3 rounded-none font-bold cursor-pointer transition-all duration-300 
+  shadow-[0_4px_12px_rgba(0,0,0,0.4)] 
+  tracking-[1px] text-sm;
 }
 
 .intro-next:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(212, 175, 55, 0.4);
+  @apply transform translate-y-[-2px] shadow-[0_6px_16px_rgba(212,175,55,0.4)];
 }
 
 .intro-start {
-  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+  @apply bg-gradient-to-br from-gold to-gold-dark color-text-dark
 }
 
 .intro-close {
-  position: absolute;
-  right: 18px;
-  top: 18px;
-  background: var(--bronze-dark);
-  color: var(--papyrus-light);
-  border: 0;
-  font-size: 28px;
-  line-height: 1;
-  cursor: pointer;
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  @apply absolute bg-bronze-dark color-papyrus-light border-0 text-2xl 
+  leading-[1] cursor-pointer w-11 h-11 flex 
+  items-center justify-center transition-all 
+  duration-200 shadow-[0_2px_8px_rgba(0,0,0,0.5)];
 }
 
 .intro-close:hover {
-  background: var(--red-ochre);
-  transform: scale(1.1);
+  @apply bg-red-ochre shadow-[0_4px_12px_rgba(255,0,0,0.5)] 
+  text-papyrus-light
 }
 
 .page-card {
-  width: 100%;
-  max-width: 1100px;
-  background: linear-gradient(135deg, var(--papyrus-medium) 0%, var(--papyrus-light) 100%);
-  border-radius: 0;
-  padding: 28px;
-  box-shadow: 
-    inset 0 0 30px rgba(0, 0, 0, 0.1),
-    0 12px 30px rgba(0, 0, 0, 0.3),
-    0 0 0 2px var(--bronze-dark);
-  border: 2px solid var(--bronze-dark);
-  position: relative;
-  overflow: hidden;
+  @apply w-full max-w-[1100px] bg-gradient-to-br from-papyrus-medium to-papyrus-light 
+    p-7 shadow-[inset_0_0_30px_rgba(0,0,0,0.1),0_12px_30px_rgba(0,0,0,0.3),0_0_0_2px_var(--bronze-dark)] 
+    border-2 border-bronze-dark relative overflow-hidden;
 }
 
 .page-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: 
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 2px,
-      rgba(0, 0, 0, 0.02) 2px,
-      rgba(0, 0, 0, 0.02) 4px
-    ),
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0, 0, 0, 0.02) 2px,
-      rgba(0, 0, 0, 0.02) 4px
-    );
-  pointer-events: none;
+  @apply content-[''] absolute inset-0 
+  bg-[linear-gradient(90deg,transparent,transparent_2px,rgba(0,0,0,0.02)_2px,rgba(0,0,0,0.02)_4px),
+  linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.02)_2px,rgba(0,0,0,0.02)_4px)];
 }
 
 .meta {
-  color: var(--bronze-medium);
-  font-size: 13px;
-  font-style: italic;
+  @apply color-text-dark font-semibold mb-2;
 }
 
 .pose-card {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  border-radius: 0;
-  background: linear-gradient(135deg, var(--stone-dark) 0%, var(--bronze-dark) 100%);
-  color: var(--papyrus-light);
-  font-size: 34px;
-  font-weight: 800;
-  font-family: 'Cinzel', serif;
-  border: 4px solid var(--bronze-medium);
-  box-shadow: 
-    inset 0 0 30px rgba(0, 0, 0, 0.5),
-    0 8px 20px rgba(0, 0, 0, 0.6);
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  @apply flex flex-col items-center justify-center gap-4 relative overflow-hidden p-5
+    bg-gradient-to-br from-papyrus-light to-papyrus-light 
+    border-4 border-bronze-medium
+    shadow-[inset_0_0_30px_rgba(0,0,0,0.5),0_8px_20px_rgba(0,0,0,0.6),0_0_0_2px_var(--bronze-dark)];
 }
 
 .pose-image {
-  text-transform: none;
+  @apply text-transform-none
 }
 
 .idle-box {
-  color: var(--bronze-light);
-  font-size: 18px;
-  font-family: 'Cinzel', serif;
-  font-weight: 600;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  @apply flex flex-col items-center justify-center gap-4 text-center p-5
+    bg-gradient-to-br from-stone-dark to-bronze-dark 
+    border-4 border-bronze-medium 
+    shadow-[inset_0_0_30px_rgba(0,0,0,0.5),0_8px_20px_rgba(0,0,0,0.6),0_0_0_2px_var(--bronze-dark)];
 }
 
-/* ========================================
-   STATUESQUE GAME LAYOUT
-   ======================================== */
+/* STATUESQUE GAME LAYOUT */
 
 .statuesque-root {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  box-sizing: border-box;
-  color: var(--papyrus-light);
-  background: radial-gradient(ellipse at center, #3a3835 0%, #2c2416 100%);
-  position: relative;
+  @apply w-full h-screen flex flex-col items-center justify-center p-5 box-border 
+  text-papyrus-light
+  bg-[radial-gradient(ellipse_at_center,#3a3835_0%,#2c2416_100%)] relative;
 }
 
 .statuesque-root::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: 
-    repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 10px,
-      rgba(255, 255, 255, 0.02) 10px,
-      rgba(255, 255, 255, 0.02) 20px
-    );
-  pointer-events: none;
-  z-index: 0;
+  @apply content-[''] absolute 
+  bg-[linear-gradient(45deg,transparent,transparent_10px,rgba(255,255,255,0.02)_10px,rgba(255,255,255,0.02)_20px)] 
+  pointer-events-none z-0;
 }
 
 .statuesque-container {
-  width: 100%;
-  height: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 28px;
-  max-width: 1400px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
+  @apply w-full h-full flex items-start justify-center gap-7 relative z-1;
 }
 
-/* ========================================
-   LEFT PANEL: WEBCAM
-   ======================================== */
-
+/* LEFT PANEL: WEBCAM */
 .statuesque-left-panel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, var(--stone-dark) 0%, var(--bronze-dark) 100%);
-  border-radius: 0;
-  overflow: hidden;
-  aspect-ratio: 4 / 3;
-  border: 6px solid var(--bronze-medium);
-  box-shadow: 
-    inset 0 0 30px rgba(0, 0, 0, 0.6),
-    0 15px 40px rgba(0, 0, 0, 0.8),
-    0 0 0 2px var(--gold);
-  position: relative;
+  @apply flex flex-col items-center justify-center 
+  bg-gradient-to-br from-stone-dark to-bronze-dark border-6 border-bronze-medium 
+  shadow-[inset_0_0_30px_rgba(0,0,0,0.6),0_15px_40px_rgba(0,0,0,0.8),0_0_0_2px_var(--gold)] 
+  relative overflow-hidden aspect-[4/3];
 }
 
 .statuesque-left-panel::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: 
-    radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-    radial-gradient(circle at 60% 70%, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    radial-gradient(circle at 85% 30%, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-  background-size: 200px 200px, 150px 150px, 180px 180px;
-  pointer-events: none;
-  z-index: 2;
+  @apply content-[''] absolute 
+  bg-[radial-gradient(circle_at_20%_50%,rgba(255,255,255,0.1)_1px,transparent_1px),radial-gradient(circle_at_60%_70%,rgba(255,255,255,0.05)_1px,transparent_1px),radial-gradient(circle_at_85%_30%,rgba(255,255,255,0.08)_1px,transparent_1px)]
+  pointer-events-none z-1;
 }
 
 .webcam-container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  z-index: 1;
+  @apply w-full h-full flex items-center justify-center relative z-1;
 }
 
 .webcam-container video,
 .webcam-container canvas {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 0;
-  display: block;
+  @apply w-full h-full object-cover rounded-none block;
 }
 
-/* ========================================
-   RIGHT PANEL: POSE DISPLAY OR INFO
-   ======================================== */
+/* RIGHT PANEL: POSE DISPLAY OR INFO */
 
 .statuesque-right-panel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, var(--papyrus-medium) 0%, var(--papyrus-light) 100%);
-  border-radius: 0;
-  padding: 28px;
-  aspect-ratio: 4 / 3;
-  border: 6px solid var(--bronze-medium);
-  box-shadow: 
-    inset 0 0 30px rgba(0, 0, 0, 0.1),
-    0 15px 40px rgba(0, 0, 0, 0.8),
-    0 0 0 2px var(--gold);
-  position: relative;
-  overflow: hidden;
+  @apply flex direction-col items-center justify-center 
+   bg-gradient-to-br from-papyrus-medium to-papyrus-light 
+   border-6 border-bronze-medium 
+   shadow-[inset_0_0_30px_rgba(0,0,0,0.1),0_15px_40px_rgba(0,0,0,0.8),0_0_0_2px_var(--gold)] 
+   relative overflow-hidden aspect-[4/3];
 }
 
 .statuesque-right-panel::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: 
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 2px,
-      rgba(0, 0, 0, 0.02) 2px,
-      rgba(0, 0, 0, 0.02) 4px
-    ),
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0, 0, 0, 0.02) 2px,
-      rgba(0, 0, 0, 0.02) 4px
-    );
-  pointer-events: none;
-  z-index: 1;
+  @apply content-[''] absolute inset-0
+  bg-[linear-gradient(45deg,transparent,transparent_10px,rgba(255,255,255,0.02)_10px,rgba(255,255,255,0.02)_20px)]
+  pointer-events-none z-1;
 }
 
 .pose-display {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  z-index: 2;
+  @apply w-full h-full flex flex-col items-center justify-center relative z-2;
 }
 
 .pose-display canvas {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  border-radius: 0;
-  display: block;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-  transform: rotateY(180deg);
+  @apply w-full h-full object-contain 
+  rounded-none block filter-[drop-shadow(0_4px_8px_rgba(0,0,0,0.2))] 
+  transform-[rotateY(180deg)];
 }
 
 .pose-info {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.6));
-  padding: 16px 20px;
-  border-radius: 0;
-  text-align: center;
-  border-top: 2px solid var(--bronze-light);
-  z-index: 3;
+  @apply absolute bg-gradient-to-t from-black/90 to-black/60 p-4 text-center 
+  border-t-2 border-bronze-light z-3 w-full z-3;
 }
 
 .level-indicator {
-  font-size: 12px;
-  color: var(--gold);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 6px;
-  font-family: 'Cinzel', serif;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  @apply text-3 color-gold font-semibold uppercase tracking-[1px] mb-1
+  shadow-[1px_1px_2px_rgba(0,0,0,0.7)];
 }
 
 .pose-counter {
-  font-size: 50px;
-  color: var(--papyrus-light);
-  font-weight: 600;
-  margin-bottom: 4px;
-  font-family: 'Cinzel', serif;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  @apply text-2 color-papyrus-light font-semibold tracking-[0.5px]
+  shadow-[2px_2px_4px_rgba(0,0,0,0.7)];
 }
 
 .countdown-display {
-  font-size: 14px;
-  color: var(--papyrus-medium);
-  font-style: italic;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  @apply text-2 mt-2 font italic
+  color-papyrus-light font-semibold tracking-[0.5px]
+  shadow-[2px_2px_4px_rgba(0,0,0,0.7)];
 }
 
 .countdown-number {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--gold);
-  font-family: 'Cinzel', serif;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  @apply text-3 mt-1
+  color-gold font-bold tracking-[1px]
+  shadow-[3px_3px_6px_rgba(0,0,0,0.8)];
 }
 
 .webcam-phase-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  text-align: center;
-  z-index: 2;
-  position: relative;
+  @apply flex flex-col items-center justify-center gap-5 text-center z-2 relative;
 }
 
 .webcam-phase-info.pulsing {
-  animation: pose-pulse 0.6s ease-out;
+  @apply animation-pose-pulse ease-out;
 }
 
 .current-pose-name {
-  font-size: 15px;
-  color: var(--text-dark);
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 2px solid var(--bronze-medium);
-  width: 100%;
-  font-family: 'Crimson Text', serif;
-  font-style: italic;
+  @apply text-2 color-papyrus-light font-semibold font italic p-2 border-2 border-bronze-light rounded-none
+  tracking-[0.5px] shadow-[2px_2px_4px_rgba(0,0,0,0.7)];
 }
 
 .idle-message {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
-  text-align: center;
-  z-index: 2;
-  position: relative;
+  @apply flex flex-col items-center justify-center gap-6 text-center z-2 relative;
 }
 
 .idle-message h2 {
-  font-size: 42px;
-  font-weight: 900;
-  color: var(--gold);
-  margin: 0;
-  font-family: 'Cinzel', serif;
-  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
-  letter-spacing: 2px;
+  @apply text-3 uppercase tracking-[2px] mb-0
+  shadow-[3px_3px_6px_rgba(0,0,0,0.5)];
 }
 
 .idle-message p {
-  font-size: 16px;
-  color: var(--text-dark);
-  margin: 0;
-  max-width: 280px;
-  font-style: italic;
-  line-height: 1.6;
+  @apply text-2 text-papyrus-light font-semibold tracking-[0.5px]
+   shadow-[2px_2px_4px_rgba(0,0,0,0.7)];
 }
 
 .start-button {
-  padding: 14px 40px;
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text-dark);
-  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
-  border: 0;
-  border-radius: 0;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  font-family: 'Cinzel', serif;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-  position: relative;
-  overflow: hidden;
+  @apply p-3.5 p-x-10 text-2 font-bold text-text-dark relative z-2
+  bg-gradient-to-br from-gold to-gold-dark border-0 rounded-none cursor-pointer transition-all duration-300
+  uppercase tracking-[1.5px] font-serif shadow-[0_8px_16px_rgba(0,0,0,0.4)] relative overflow-hidden;
 }
 
 .start-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.5s ease;
+  @apply content-[''] absolute top-0 left-[-100%] width-full height-full
+  bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)] transition-left duration-500 ease;
+  transform left 0.5s ease;
 }
 
 .start-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(212, 175, 55, 0.4);
+  @apply bg-gradient-to-br from-gold to-gold-dark
+  box-shadow-[0_12px_24px_rgba(212,175,55,0.4)]
 }
 
 .start-button:hover:not(:disabled)::before {
-  left: 100%;
+  @apply left-100%;
 }
 
 .start-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  background: linear-gradient(135deg, var(--papyrus-dark) 0%, var(--bronze-medium) 100%);
+  @apply opacity-60 cursor-not-allowed bg-gradient-to-br from-papyrus-dark to-bronze-medium;
 }
 
-/* ========================================
-   SEQUENCE DISPLAY
-   ======================================== */
-
+/* SEQUENCE DISPLAY */
 .sequence-display {
-  background: linear-gradient(135deg, var(--papyrus-medium) 0%, var(--papyrus-light) 100%);
-  padding: 16px;
-  border-radius: 0;
-  box-shadow: 
-    inset 0 0 15px rgba(0, 0, 0, 0.1),
-    0 4px 12px rgba(0, 0, 0, 0.3),
-    0 0 0 2px var(--bronze-dark);
-  border: 2px solid var(--bronze-dark);
-  position: relative;
-  overflow: hidden;
+  @apply bg-gradient-to-br from-papyrus-medium to-papyrus-light 
+  p-4 border-2 border-bronze-dark 
+  shadow-[inset_0_0_15px_rgba(0,0,0,0.1),0_4px_12px_rgba(0,0,0,0.3),0_0_0_2px_var(--bronze-dark)] 
+  relative overflow-hidden;
 }
 
 .sequence-display::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: 
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 2px,
-      rgba(0, 0, 0, 0.02) 2px,
-      rgba(0, 0, 0, 0.02) 4px
-    );
-  pointer-events: none;
+  @apply content-[''] absolute inset-0
+  bg-[linear-gradient(90deg,transparent,transparent_2px,rgba(0,0,0,0.02)_2px,rgba(0,0,0,0.02)_4px)]
+  pointer-events-none z-1;
 }
 
 .seq-title {
-  margin: 0 0 12px 0;
-  font-size: 18px;
-  font-family: 'Cinzel', serif;
-  color: var(--text-dark);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  position: relative;
-  z-index: 1;
+  @apply m-0 mb-3 text-2 uppercase tracking-[1px] text-text-dark font-bold
+  shadow-[2px_2px_4px_rgba(0,0,0,0.7)] z-2 relative;
 }
 
 .sequence-list {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  position: relative;
-  z-index: 1;
+  @apply flex flex-col items-start justify-start gap-3 relative z-1;
 }
 
 .seq-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
-  border-radius: 0;
-  background: linear-gradient(135deg, var(--papyrus-light) 0%, var(--papyrus-light) 100%);
-  border: 2px solid var(--bronze-medium);
-  min-width: 110px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
+  @apply flex items-center gap-2 px-3 py-2 border-2 border-bronze-medium rounded-none
+  bg-gradient-to-br from-papyrus-light to-papyrus-light
+  shadow-[0_2px_6px_rgba(0,0,0,0.2)] transition-all duration-300 relative z-1;
 }
 
 .seq-item .idx {
-  width: 28px;
-  height: 28px;
-  background: linear-gradient(135deg, var(--bronze-medium) 0%, var(--bronze-dark) 100%);
-  border-radius: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  color: var(--papyrus-light);
-  font-family: 'Cinzel', serif;
-  font-size: 12px;
-  border: 1px solid var(--bronze-dark);
-  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.3);
+  @apply w-7 h-7 flex items-center justify-center font-bold text-papyrus-light
+  bg-gradient-to-br from-bronze-medium to-bronze-dark border-2 
+  border-bronze-dark rounded-none shadow-[inset_0_0_4px_rgba(0,0,0,0.3)];
 }
 
 .seq-item .label {
-  font-family: 'Crimson Text', serif;
-  color: var(--text-dark);
-  font-size: 14px;
+  @apply color-text-dark text-3 font-semibold tracking-[0.5px];
 }
 
 .seq-item.highlight {
-  box-shadow: 
-    0 0 0 3px var(--gold),
-    0 4px 8px rgba(212, 175, 55, 0.3);
-  transform: translateY(-2px);
-  background: linear-gradient(135deg, var(--gold) 0%, var(--papyrus-light) 100%);
-  border-color: var(--gold);
+  @apply box-shadow-[0_0_0_3px_var(--gold),0_4px_8px_rgba(212,175,55,0.3)] translate-y-[-2px]
+  bg-gradient-to-br from-gold to-papyrus-light border-color-gold;
 }
 
 .seq-item.filled {
-  background: linear-gradient(135deg, #d4e4d4 0%, #c0dcc0 100%);
-  border-color: #7cb342;
+  @apply bg-gradient-to-br from-papyrus-light to-papyrus-light border-bronze-medium;
 }
 
 .seq-item.wrong {
-  background: linear-gradient(135deg, #f5d4d4 0%, #fcc0c0 100%);
-  border-color: var(--red-ochre);
+  @apply bg-gradient-to-br from-papyrus-light to-papyrus-light border-bronze-medium 
+  border-color-red-ochre shadow-[0_2px_6px_rgba(255,0,0,0.5)] translate-y-[-1px];
 }
 
-/* ========================================
-   RESPONSIVE
-   ======================================== */
-
+/* RESPONSIVE */
 @media (max-width: 1024px) {
   .statuesque-container {
-    grid-template-columns: 1fr;
-    gap: 20px;
+    @apply grid-cols-1 gap-5;
   }
 
   .statuesque-left-panel,
   .statuesque-right-panel {
-    aspect-ratio: auto;
-    height: 380px;
+    @apply aspect-auto h-380px;
   }
 
   .idle-message h2 {
-    font-size: 36px;
+    @apply text-2xl;
   }
 }
 
 @media (max-width: 640px) {
   .statuesque-root {
-    padding: 12px;
+    @apply p-3;
   }
 
   .statuesque-container {
-    gap: 12px;
+    @apply gap-3;
   }
 
   .statuesque-left-panel,
   .statuesque-right-panel {
-    height: 280px;
-    border-radius: 0;
-    padding: 16px;
-    border-width: 4px;
+    @apply h-[280px] p-4 border-[4px];
   }
 
   .idle-message h2 {
-    font-size: 28px;
-    letter-spacing: 1px;
+    @apply text-xl tracking-[1px];
   }
 
   .idle-message p {
-    font-size: 14px;
+    @apply text-3;
   }
 
   .start-button {
-    padding: 10px 24px;
-    font-size: 14px;
-    letter-spacing: 1px;
+    @apply py-2 px-6 text-sm tracking-[1px];
   }
 
   .pose-info {
-    padding: 12px 16px;
+    @apply p-3;
   }
 
   .level-indicator {
-    font-size: 11px;
+    @apply text-xs;
   }
 
   .pose-counter {
-    font-size: 15px;
+    @apply text-4;
   }
 }
 
-/* ========================================
-   LEGACY SUPPORT
-   ======================================== */
-
+/* LEGACY SUPPORT */
 .pose-screen {
-  flex: 1;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @apply flex w-full h-full items-center justify-center;
 }
 
 .pose-screen img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  border-radius: 0;
-  border: 2px solid var(--bronze-dark);
+  @apply max-w-full max-h-full object-contain 
+  rounded-none border-2 border-bronze-dark;
 }
 
 .statuesque-info {
-  font-size: 16px;
-  text-align: center;
-  color: var(--papyrus-light);
-  font-family: 'Crimson Text', serif;
+  @apply text-4 text align-center color-papyrus-light 
+  font-semibold tracking-[0.5px];
 }
 
 .camera-wrap {
-  flex: 1;
-  width: 100%;
-  padding: 8px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  @apply flex 1 w-full p-2 box-border flex-col gap-2;
 }
 
 .camera-wrap video,
 .camera-wrap canvas {
-  width: 100%;
-  max-height: 100%;
-  border-radius: 0;
-  object-fit: contain;
-  border: 2px solid var(--bronze-dark);
+  @apply w-full max-h-100 object-contain border-2 border-bronze-dark rounded-none;
 }
 
 .ending-screen,
 .gameover-screen {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
-  text-align: center;
-  width: 100%;
-  color: var(--papyrus-light);
+  @apply flex w-full flex-col items-center justify-center gap-6 text-center
 }
 
 .game-results-container {
-  margin-top: 20px;
-  font-size: 14px;
-  text-align: left;
-  width: 100%;
+  @apply m-5 text-3 text align-left w-full;
 }
 
 .game-results-container h3 {
-  font-family: 'Cinzel', serif;
-  color: var(--gold);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 12px;
+  @apply color-gold text transform uppercase
+  letter-spacing-[1px] mb-3;
 }
 
 .result-item {
-  margin-bottom: 12px;
-  padding: 12px;
-  background: linear-gradient(135deg, var(--papyrus-light) 0%, var(--papyrus-medium) 100%);
-  border-left: 4px solid var(--bronze-medium);
-  border-radius: 0;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  @apply mb-3 p-3 bg-gradient-to-br from-papyrus-light to-papyrus-medium
+  border-l border-bronze-medium rounded-none shadow-[0_2px_6px_rgba(0,0,0,0.2)];
 }
 
 .result-item > div:first-child {
-  font-weight: 600;
-  color: var(--text-dark);
-  margin-bottom: 4px;
+  @apply text-3 color-text-dark m-1;
 }
 
 .result-item > div:nth-child(2) {
-  font-size: 13px;
-  color: var(--bronze-medium);
-  margin-bottom: 4px;
+  @apply text-4 color-bronze-medium m-1;
 }
 
 .result-item > div:nth-child(3) {
-  font-size: 13px;
-  font-weight: 600;
+  @apply text-3 font-bold m-1;
 }
 
 .result-passed {
-  color: #2d5016;
+  @apply color-green-700;
 }
 
 .result-failed {
-  color: var(--red-ochre);
+  @apply color-red-ochre;
 }
 
 /* Canvas positioning for pose display */
 .pose-display-canvas {
-  width: 100%;
-  height: 100%;
-  border-radius: 0;
-  display: block;
-  object-fit: contain;
+  @apply w-full h-full display-block object-contain;
 }
 
 /* Button styles for ending/gameover screens */
 .restart-button,
 .try-again-button {
-  padding: 14px 40px;
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text-dark);
-  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
-  border: 0;
-  border-radius: 0;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  font-family: 'Cinzel', serif;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-  position: relative;
-  overflow: hidden;
+  @apply p-3.5 p-x-10 text-2 font-bold color-text-dark relative z-2
+  bg-gradient-to-br from-gold to-gold-dark border-0 rounded-none cursor-pointer transition-all duration-300
+  uppercase tracking-[1.5px] font-serif shadow-[0_8px_16px_rgba(0,0,0,0.4)] relative overflow-hidden;
 }
 
 .restart-button::before,
 .try-again-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.5s ease;
+  @apply content-[''] absolute top-0 left-[-100%] width-full height-full
+  bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)] 
+  transition-left duration-500 ease;
 }
 
 .restart-button:hover,
 .try-again-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(212, 175, 55, 0.4);
+  @apply transform translate-y-[-2px] 
+  shadow-[0_12px_24px_rgba(212,175,55,0.4)];
 }
 
 .restart-button:hover::before,
 .try-again-button:hover::before {
-  left: 100%;
+  @apply left-100%;
 }
 
 .statuesque-overlay {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.85);
-  z-index: 9999;
-  backdrop-filter: blur(2px);
+  @apply fixed flex align-items-center justify-center
+  bg-black/85 z-[9999] backdrop-blur-[2px];
 }
 
 .statuesque-modal {
-  background: linear-gradient(135deg, var(--papyrus-medium) 0%, var(--papyrus-light) 100%);
-  border: 4px solid var(--bronze-dark);
-  border-radius: 0;
-  padding: 40px;
-  max-width: 500px;
-  width: 90vw;
-  max-height: 80vh;
-  overflow-y: auto;
-  box-shadow: 
-    inset 0 0 30px rgba(0, 0, 0, 0.1),
-    0 20px 60px rgba(0, 0, 0, 0.8),
-    0 0 0 3px var(--gold);
-  position: relative;
-  text-align: center;
-  color: var(--text-dark);
+  @apply bg-gradient-to-br from-papyrus-medium to-papyrus-light
+  border-1 p-10 max-w-[500px] w-[90vw] max-h-[80vh] overflow-y-auto
+  box shadow-[inset_0_0_30px_rgba(0,0,0,0.1),0_20px_60px_rgba(0,0,0,0.8),0_0_0_3px_var(--gold)]
+  relative text-center color-text-dark;
 }
 
 .statuesque-modal::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: 
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 2px,
-      rgba(0, 0, 0, 0.02) 2px,
-      rgba(0, 0, 0, 0.02) 4px
-    ),
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0, 0, 0, 0.02) 2px,
-      rgba(0, 0, 0, 0.02) 4px
-    );
-  pointer-events: none;
+  @apply content-[''] absolute inset-0
+  bg-[linear-gradient(90deg,transparent,transparent_2px,rgba(0,0,0,0.02)_2px,rgba(0,0,0,0.02)_4px),linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.02)_2px,rgba(0,0,0,0.02)_4px)]
+  pointer-events-none z-0;
 }
 
 .statuesque-modal h2 {
-  font-family: 'Cinzel', serif;
-  font-size: 32px;
-  font-weight: 900;
-  color: var(--gold);
-  margin: 0 0 16px 0;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-  position: relative;
-  z-index: 1;
+  @apply text-8 font weight-900 text-gold uppercase tracking-[1px] mb-4
+  text transform uppercase shadow-[1px_1px_2px_rgba(0,0,0,0.2)] relative z-1;
 }
 
 .statuesque-modal p {
-  font-family: 'Crimson Text', serif;
-  font-size: 16px;
-  color: var(--text-dark);
-  margin: 0 0 16px 0;
-  line-height: 1.6;
-  position: relative;
-  z-index: 1;
+  @apply text-4 color-text-dark text align-left w-full
+  relative z-1;
 }
 
 .statuesque-modal .game-results-container {
-  position: relative;
-  z-index: 1;
+  @apply position-relative z-1;
 }
 
 .statuesque-modal button {
-  margin-top: 24px;
-  position: relative;
-  z-index: 1;
+  @apply m-top-4 relative z-1;
 }
 
-/* ========================================
-   PLAYER NAME INPUT
-   ======================================== */
-
+/* PLAYER NAME INPUT */
 .player-name-input {
-  width: 100%;
-  max-width: 300px;
-  padding: 12px 16px;
-  border: 2px solid var(--bronze-medium);
-  border-radius: 0;
-  background: var(--papyrus-light);
-  color: var(--text-dark);
-  font-family: 'Crimson Text', serif;
-  font-size: 16px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
+  @apply w-full m-width-300px p-3 p-x-4
+  border-2 border-bronze-medium rounded-none bg-papyrus-light color-text-dark
+  text-4 box shadow-[0_2px_6px_rgba(0,0,0,0.2)] transition-all duration-300;
 }
 
 .player-name-input:focus {
-  outline: none;
-  border-color: var(--gold);
+  @apply border color-gold shadow-[0_0_0_3px_rgba(212,175,55,0.2),0_2px_6px_rgba(0,0,0,0.2)] bg-papyrus-light;
   box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2), 0 2px 6px rgba(0, 0, 0, 0.2);
-  background: var(--papyrus-light);
+  bgcolor: var(--papyrus-light);
 }
 
 .player-name-input::placeholder {
-  color: var(--bronze-medium);
-  opacity: 0.7;
+  @apply color-papyrus-medium italic opacity-70;
 }
 
-/* ========================================
-   SCORE SUBMISSION SECTION
-   ======================================== */
-
+/* SCORE SUBMISSION SECTION */
 .score-submission {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  margin-top: 24px;
-  position: relative;
-  z-index: 1;
+  @apply flex flex-direction column items-center gap-4 m-top-6 relative z-1;
 }
 
 .modal-button-group {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  flex-wrap: wrap;
-  width: 100%;
+  @apply flex gap-3 justify-center flex-wrap w-full;
 }
 
 .submit-score-button {
-  padding: 14px 40px;
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text-dark);
-  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
-  border: 0;
-  border-radius: 0;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  font-family: 'Cinzel', serif;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-  position: relative;
-  overflow: hidden;
+  @apply p-3.5 p-x-10 text-2
+  color-text-dark bg-gradient-to-br from-gold to-gold-dark border-0 rounded-none cursor-pointer transition-all duration-300
+  uppercase tracking-[1.5px] shadow-[0_8px_16px_rgba(0,0,0,0.4)] 
+  relative overflow-hidden;
 }
 
 .submit-score-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.5s ease;
+  @apply content-[''] absolute top-0 left-[-100%] width-full height-full
+  bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)] 
+  transition-left duration-500 ease;
 }
 
 .submit-score-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(212, 175, 55, 0.4);
+  @apply transform translate-y-[-2px] shadow-[0_12px_24px_rgba(212,175,55,0.4)];
 }
 
 .submit-score-button:hover:not(:disabled)::before {
-  left: 100%;
+  @apply left-full;
 }
 
 .submit-score-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  background: linear-gradient(135deg, var(--papyrus-dark) 0%, var(--bronze-medium) 100%);
+  @apply opacity-60 cursor-not-allowed 
+  bg-gradient-to-br from-papyrus-dark to-bronze-medium;
 }
 
 .leaderboard {
-  font-family: 'Crimson Text', serif;
-  font-size: 20px;
-  color: var(--papyrus-medium);
-  margin: 0 0 16px 0;
-  line-height: 1.6;
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  padding-top: 5%;
+  @apply flex flex-col text-5 p-top-1 items-start 
+  justify-start gap-4 w-full relative z-1;
 }
 
 .leaderboard h3 {
-  font-family: 'Crimson Text', serif;
-  font-size: 32px;
-  color: var(--papyrus-dark);
-  margin: 0 0 16px 0;
-  line-height: 1.6;
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column; 
-  align-self: center; 
+  @apply flex flex-col text-8 color-gold uppercase tracking-[1px]
+  line-height-1 align self-center;
 }
 
 .leaderboard ol {
-  padding-left: 10%;
+  @apply p-0 w-full;
 }
 
 .switch-sort-button {
-  padding: 10px;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text-dark);
-  background: linear-gradient(135deg, var(--bronze-medium) 0%, var(--bronze-light) 100%);
-  border: 0;
-  border-radius: 0;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  font-family: 'Cinzel', serif;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-  position: relative;
-  overflow: hidden;
-  align-self: center;
+  @apply p-2 text-4 font-bold color-text-dark align-self-center
+  bg-gradient-to-br from-papyrus-light to-papyrus-light border-2 border-bronze-medium rounded-none
+  shadow-[0_2px_6px_rgba(0,0,0,0.2)] transition-all duration-300 relative;
 }
 
 .switch-sort-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.5s ease;
+  @apply content-[''] absolute top-0 left-[-100%] width-full height-full
+  bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)] 
+  transition-left duration-500 ease;
 }
 
 .switch-sort-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(212, 175, 55, 0.4);
+  @apply transform translate-y-[-2px] shadow-[0_12px_24px_rgba(212,175,55,0.4)];
 }
 
 .switch-sort-button:hover::before {
-  left: 100%;
+  @apply left-100%;
 }
