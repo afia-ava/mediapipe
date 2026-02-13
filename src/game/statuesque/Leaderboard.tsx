@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getLeaderboard, supabase, type LeaderboardEntry } from '../../lib/supabase'
+import { supabase } from '../../lib/supabase'
 
 type Score = {
   id: number;

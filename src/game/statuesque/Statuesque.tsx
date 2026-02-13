@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PoseGame from "./PoseGame";
 import { Leaderboard } from "./Leaderboard"; 
-
+import "./GamePage.css";
 
 export default function GamePage() {
   const [showIntro, setShowIntro] = useState(true);

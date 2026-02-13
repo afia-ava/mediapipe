@@ -1,4 +1,5 @@
 import { useState } from "react";
+import GamePage from "./GamePage";
 
 export default function FlappyBird() {
     const [gameState, setGameState] = useState("menu");
@@ -28,11 +29,7 @@ export default function FlappyBird() {
                     <button onClick={() => setGameState("playing")}>Start Game</button>
                 </div>
             )}
-            {gameState === "playing" && (
-                <div style={{ textAlign: "center", paddingTop: "100px", color: "white" }}>
-                    <p>Game will load here</p>
-                </div>
-            )}
+            {gameState === "playing" && <GamePage onGameOver={handleGameOver} />}
             {gameState === "gameover" && (
                 <div style={{ textAlign: "center", paddingTop: "100px", color: "white" }}>
                     <h1>Game Over</h1>

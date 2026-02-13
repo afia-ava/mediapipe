@@ -36,7 +36,7 @@ export default function HomePage() {
                     <Link
                         key={game.title}
                         to={game.route}
-                        className={`block p-6 rounded-lg shadow-lg text-center text-white font-serif bg-gradient-to-br ${game.color} transform transition-transform hover:scale-105 cursor-pointer`}
+                        className={`block p-6 rounded-lg shadow-lg text-center text-white font-serif bg-gradient-to-br ${game.color} transform transition-transform hover:scale-105`}
                     >
                         <h2 className="text-3xl font-bold mb-2">
                             {game.title}
@@ -44,7 +44,7 @@ export default function HomePage() {
                         <p className="text-papyrus-light mb-4 font-serif">
                             {game.description}
                         </p>
-                        <div className="bg-gold text-stone-dark font-bold py-2 px-4 rounded-full hover:bg-gold-light transition-colors inline-block">
+                        <div className="bg-gold text-stone-dark font-bold py-2 px-4 rounded-full hover:bg-gold-light transition-colors">
                             Play
                         </div>
                     </Link>
