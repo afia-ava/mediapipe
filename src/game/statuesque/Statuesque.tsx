@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PoseGame from "../game/PoseGame";
+import PoseGame from "../game/statuesque/PoseGame";
 import { Leaderboard } from "../game/Leaderboard"; 
 
 

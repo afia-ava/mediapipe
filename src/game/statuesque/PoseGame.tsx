@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { WebcamCapture, type WebcamCaptureHandle } from "../pose-detection/WebcamCapture";
-import { extractAllPosesFromAssets, getAllCachedPoses, comparePoses, type StoredPoseData, type ComparisonResult } from "../pose-utils";
-import { drawPoseImageWithLandmarks } from "../pose-utils/drawLandmarks";
-import { supabase } from "../lib/supabase";
+import { WebcamCapture, type WebcamCaptureHandle } from "../../pose-detection/WebcamCapture";
+import { extractAllPosesFromAssets, getAllCachedPoses, comparePoses, type StoredPoseData, type ComparisonResult } from "../../pose-utils";
+import { drawPoseImageWithLandmarks } from "../../pose-utils/drawLandmarks";
+import { supabase } from "../../lib/supabase";
 
 
 const MATCH_THRESHOLD = 0.45;
