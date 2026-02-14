@@ -202,29 +202,27 @@
 }
 
 .pose-info {
-  @apply absolute bg-gradient-to-t from-black/90 to-black/60 p-4 text-center 
-  border-t-2 border-bronze-light z-[3] w-full;
+  @apply absolute bottom-0 left-0 w-full p-4 max-[1024px]:p-3 text-center z-[3]
+  bg-gradient-to-t from-black/95 to-black/60; 
 }
 
 .level-indicator {
   @apply text-3 text-gold font-semibold uppercase tracking-[1px] mb-1
-  shadow-[1px_1px_2px_rgba(0,0,0,0.7)];
+  shadow-[1px_1px_2px_rgba(0,0,0,0.7)] max-[1024px]:text-xs;
 }
 
 .pose-counter {
-  @apply text-2 text-papyrus-light font-semibold tracking-[0.5px]
+  @apply text-2 text-papyrus-light font-semibold tracking-[0.5px] max-[1024px]:text-4
   shadow-[2px_2px_4px_rgba(0,0,0,0.7)];
 }
 
 .countdown-display {
-  @apply text-2 mt-2 italic
-  text-papyrus-light font-semibold tracking-[0.5px]
+  @apply text-2 mt-2 italic text-papyrus-light font-semibold tracking-[0.5px]
   shadow-[2px_2px_4px_rgba(0,0,0,0.7)];
 }
 
 .countdown-number {
-  @apply text-3 mt-1
-  text-gold font-bold tracking-[1px]
+  @apply text-3 mt-1 text-gold font-bold tracking-[1px]
   shadow-[3px_3px_6px_rgba(0,0,0,0.8)];
 }
 
@@ -237,7 +235,7 @@
 }
 
 .current-pose-name {
-  @apply text-2 text-papyrus-light font-semibold italic p-2 border-2 border-bronze-light rounded-none
+  @apply text-2 text-text-dark font-semibold italic p-2 border-2 border-bronze-light rounded-none
   tracking-[0.5px] shadow-[2px_2px_4px_rgba(0,0,0,0.7)];
 }
 
@@ -246,13 +244,12 @@
 }
 
 .idle-message h2 {
-  @apply text-3 uppercase tracking-[2px] mb-0
-  shadow-[3px_3px_6px_rgba(0,0,0,0.5)];
+  @apply text-3 uppercase tracking-[2px] mb-0 text-text-dark font-bold;
 }
 
 .idle-message p {
   @apply text-2 text-papyrus-light font-semibold tracking-[0.5px]
-   shadow-[2px_2px_4px_rgba(0,0,0,0.7)];
+   shadow-[2px_2px_4px_rgba(0,0,0,0.7)]; 
 }
 
 .start-button {
@@ -371,18 +368,6 @@
   @apply max-[1024px]:py-2 max-[1024px]:px-6 max-[1024px]:text-sm tracking-[1px];
 }
 
-.pose-info {
-  @apply max-[1024px]:p-3;
-}
-
-.level-indicator {
-  @apply max-[1024px]:text-xs;
-}
-
-.pose-counter {
-  @apply max-[1024px]:text-4;
-}
-
 /* LEGACY SUPPORT */
 .pose-screen {
   @apply flex w-full h-full items-center justify-center;
@@ -413,7 +398,7 @@
 }
 
 .game-results-container {
-  @apply m-5 text-3 text-left w-full;
+  @apply my-5 text-3 text-left box-border;
 }
 
 .game-results-container h3 {
@@ -478,15 +463,15 @@
 }
 
 .statuesque-overlay {
-  @apply fixed flex items-center justify-center
+  @apply fixed inset-0 flex items-center justify-center
   bg-black/85 z-[9999] backdrop-blur-[2px];
 }
 
 .statuesque-modal {
   @apply bg-gradient-to-br from-papyrus-medium to-papyrus-light
-  border p-10 max-w-[500px] w-[90vw] max-h-[80vh] overflow-y-auto
+  border p-10 max-w-[500px] w-[90vw] max-h-[80vh] overflow-y-auto overflow-x-hidden
   shadow-[inset_0_0_30px_rgba(0,0,0,0.1),0_20px_60px_rgba(0,0,0,0.8),0_0_0_3px_var(--gold)]
-  relative text-center text-text-dark;
+  relative text-center text-text-dark; 
 }
 
 .statuesque-modal::before {
@@ -501,7 +486,7 @@
 }
 
 .statuesque-modal p {
-  @apply text-4 text-text-dark text-left w-full
+  @apply text-4 text-text-dark text-left
   relative z-[1];
 }
 
@@ -513,7 +498,7 @@
   @apply mt-4 relative z-[1];
 }
 
-/* PLAYER NAME INPUT */
+/* PLAYER NAME INPUT */ 
 .player-name-input {
   @apply w-full max-w-[300px] p-3 px-4
   border-2 border-bronze-medium rounded-none bg-papyrus-light text-text-dark
