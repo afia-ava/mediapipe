@@ -1,6 +1,5 @@
 .game-page {
-  @apply flex min-h-screen w-screen items-center justify-center font-serif text-text-dark;
-  background: radial-gradient(ellipse at center, #4a4238 0%, #2c2416 100%);
+  @apply flex h-screen w-full items-center justify-center font-serif text-text-dark overflow-hidden;
 }
 
 .game-header {
@@ -8,11 +7,11 @@
 }
 
 .game-main {
-  @apply w-full h-full max-w-[1100px] flex gap-7 items-start;
+  @apply w-full h-full max-w-[1400px] flex gap-7 items-center;
 }
 
 .left {
-  @apply flex-[1_1_640px] flex items-center justify-center;
+  @apply flex flex-1 w-full items-center justify-center;
 }
 
 .right {
@@ -28,7 +27,7 @@
 }
 
 .video-placeholder {
-  @apply flex items-center justify-center w-[480px] h-[360px] border-8 border-bronze-dark rounded-sm
+  @apply flex items-center justify-center w-full max-w-[480px] aspect-[4/3] border-8 border-bronze-dark rounded-sm
     text-papyrus-light bg-[linear-gradient(135deg,var(--stone-dark)_0%,var(--bronze-dark)_100%)]
       shadow-[inset_0_0_20px_rgba(0,0,0,0.8),0_8px_16px_rgba(0,0,0,0.5)];
 }
@@ -123,7 +122,7 @@
 .page-card::before {
   @apply content-[''] absolute inset-0 
   bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)] 
-  transition-all duration-500 ease;
+  transition-all duration-500 ease-in-out;
 }
 
 .meta {
@@ -151,24 +150,17 @@
 /* STATUESQUE GAME LAYOUT */
 
 .statuesque-root {
-  @apply w-full h-screen flex flex-col items-center justify-center p-5 box-border 
-  text-papyrus-light
-  bg-[radial-gradient(ellipse_at_center,#3a3835_0%,#2c2416_100%)] relative;
-}
-
-.statuesque-root::before {
-  @apply content-[''] absolute 
-  bg-[linear-gradient(45deg,transparent,transparent_10px,rgba(255,255,255,0.02)_10px,rgba(255,255,255,0.02)_20px)] 
-  pointer-events-none z-0;
+  @apply w-full h-full flex flex-col items-center justify-center p-5 box-border 
+  text-papyrus-light;
 }
 
 .statuesque-container {
-  @apply w-full h-full flex items-start justify-center gap-7 relative z-1;
+  @apply w-full h-full flex items-center justify-center gap-7 relative z-[1];
 }
 
 /* LEFT PANEL: WEBCAM */
 .statuesque-left-panel {
-  @apply flex flex-col items-center justify-center 
+  @apply flex flex-col flex-1 items-center justify-center
   bg-gradient-to-br from-stone-dark to-bronze-dark border-[6px] border-bronze-medium 
   shadow-[inset_0_0_30px_rgba(0,0,0,0.6),0_15px_40px_rgba(0,0,0,0.8),0_0_0_2px_var(--gold)] 
   relative overflow-hidden aspect-[4/3];
@@ -177,11 +169,11 @@
 .statuesque-left-panel::before {
   @apply content-[''] absolute 
   bg-[radial-gradient(circle_at_20%_50%,rgba(255,255,255,0.1)_1px,transparent_1px),radial-gradient(circle_at_60%_70%,rgba(255,255,255,0.05)_1px,transparent_1px),radial-gradient(circle_at_85%_30%,rgba(255,255,255,0.08)_1px,transparent_1px)]
-  pointer-events-none z-1;
+  pointer-events-none z-[1];
 }
 
 .webcam-container {
-  @apply w-full h-full flex items-center justify-center relative z-1;
+  @apply w-full h-full flex items-center justify-center relative z-[1];
 }
 
 .webcam-container video,
@@ -192,21 +184,15 @@
 /* RIGHT PANEL: POSE DISPLAY OR INFO */
 
 .statuesque-right-panel {
-  @apply flex flex-col items-center justify-center 
+  @apply flex flex-col flex-1 items-center justify-center 
    bg-gradient-to-br from-papyrus-medium to-papyrus-light 
    border-[6px] border-bronze-medium 
    shadow-[inset_0_0_30px_rgba(0,0,0,0.1),0_15px_40px_rgba(0,0,0,0.8),0_0_0_2px_var(--gold)] 
    relative overflow-hidden aspect-[4/3];
 }
 
-.statuesque-right-panel::before {
-  @apply content-[''] absolute inset-0
-  bg-[linear-gradient(45deg,transparent,transparent_10px,rgba(255,255,255,0.02)_10px,rgba(255,255,255,0.02)_20px)]
-  pointer-events-none z-1;
-}
-
 .pose-display {
-  @apply w-full h-full flex flex-col items-center justify-center relative z-2;
+  @apply w-full h-full flex flex-col items-center justify-center relative z-[2];
 }
 
 .pose-display canvas {
@@ -217,7 +203,7 @@
 
 .pose-info {
   @apply absolute bg-gradient-to-t from-black/90 to-black/60 p-4 text-center 
-  border-t-2 border-bronze-light z-3 w-full;
+  border-t-2 border-bronze-light z-[3] w-full;
 }
 
 .level-indicator {
@@ -243,11 +229,11 @@
 }
 
 .webcam-phase-info {
-  @apply flex flex-col items-center justify-center gap-5 text-center z-2 relative;
+  @apply flex flex-col items-center justify-center gap-5 text-center z-[2] relative;
 }
 
 .webcam-phase-info.pulsing {
-  @apply animation-pose-pulse ease-out;
+  @apply animate-pose-pulse ease-out;
 }
 
 .current-pose-name {
@@ -256,7 +242,7 @@
 }
 
 .idle-message {
-  @apply flex flex-col items-center justify-center gap-6 text-center z-2 relative;
+  @apply flex flex-col items-center justify-center gap-6 text-center z-[2] relative;
 }
 
 .idle-message h2 {
@@ -270,14 +256,14 @@
 }
 
 .start-button {
-  @apply p-3.5 px-10 text-2 font-bold text-text-dark relative z-2
+  @apply p-3.5 px-10 text-2 font-bold text-text-dark relative z-[2]
   bg-gradient-to-br from-gold to-gold-dark border-0 rounded-none cursor-pointer transition-all duration-300
   uppercase tracking-[1.5px] shadow-[0_8px_16px_rgba(0,0,0,0.4)] relative overflow-hidden;
 }
 
 .start-button::before {
   @apply content-[''] absolute top-0 left-[-100%] w-full h-full
-  bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)] transition-all duration-500 ease;
+  bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)] transition-all duration-500 ease-in-out;
 }
 
 .start-button:hover:not(:disabled) {
@@ -304,22 +290,22 @@
 .sequence-display::before {
   @apply content-[''] absolute inset-0
   bg-[linear-gradient(90deg,transparent,transparent_2px,rgba(0,0,0,0.02)_2px,rgba(0,0,0,0.02)_4px)]
-  pointer-events-none z-1;
+  pointer-events-none z-[1];
 }
 
 .seq-title {
   @apply m-0 mb-3 text-2 uppercase tracking-[1px] text-text-dark font-bold
-  shadow-[2px_2px_4px_rgba(0,0,0,0.7)] z-2 relative;
+  shadow-[2px_2px_4px_rgba(0,0,0,0.7)] z-[2] relative;
 }
 
 .sequence-list {
-  @apply flex flex-col items-start justify-start gap-3 relative z-1;
+  @apply flex flex-col items-start justify-start gap-3 relative z-[1];
 }
 
 .seq-item {
   @apply flex items-center gap-2 px-3 py-2 border-2 border-bronze-medium rounded-none
   bg-gradient-to-br from-papyrus-light to-papyrus-light
-  shadow-[0_2px_6px_rgba(0,0,0,0.2)] transition-all duration-300 relative z-1;
+  shadow-[0_2px_6px_rgba(0,0,0,0.2)] transition-all duration-300 relative z-[1];
 }
 
 .seq-item .idx {
@@ -348,12 +334,12 @@
 
 /* RESPONSIVE */
 .statuesque-container {
-  @apply max-[1024px]:max-w-[1024px] max-[1024px]:gap-5;
+  @apply max-[1024px]:flex-col max-[1024px]:items-center max-[1024px]:max-w-full max-[1024px]:gap-5 w-full;
 }
 
 .statuesque-left-panel,
 .statuesque-right-panel {
-  @apply max-[1024px]:aspect-auto max-[1024px]:h-[380px];
+  @apply max-[1024px]:aspect-auto max-[1024px]:h-auto max-[1024px]:w-full max-[1024px]:max-w-[640px];
 }
 
 .idle-message h2 {
@@ -370,31 +356,31 @@
 
 .statuesque-left-panel,
 .statuesque-right-panel {
-  @apply h-[280px] p-4 border-[4px];
+  @apply max-[1024px]:h-[280px] p-4 border-[4px];
 }
 
 .idle-message h2 {
-  @apply text-xl tracking-[1px];
+  @apply max-[1024px]:text-xl tracking-[1px];
 }
 
 .idle-message p {
-  @apply text-3;
+  @apply max-[1024px]:text-3;
 }
 
 .start-button {
-  @apply py-2 px-6 text-sm tracking-[1px];
+  @apply max-[1024px]:py-2 max-[1024px]:px-6 max-[1024px]:text-sm tracking-[1px];
 }
 
 .pose-info {
-  @apply p-3;
+  @apply max-[1024px]:p-3;
 }
 
 .level-indicator {
-  @apply text-xs;
+  @apply max-[1024px]:text-xs;
 }
 
 .pose-counter {
-  @apply text-4;
+  @apply max-[1024px]:text-4;
 }
 
 /* LEGACY SUPPORT */
@@ -418,7 +404,7 @@
 
 .camera-wrap video,
 .camera-wrap canvas {
-  @apply w-full max-h-100 object-contain border-2 border-bronze-dark rounded-none;
+  @apply w-full max-h-full object-contain border-2 border-bronze-dark rounded-none;
 }
 
 .ending-screen,
@@ -468,7 +454,7 @@
 /* Button styles for ending/gameover screens */
 .restart-button,
 .try-again-button {
-  @apply p-3.5 px-10 text-2 font-bold text-text-dark relative z-2
+  @apply p-3.5 px-10 text-2 font-bold text-text-dark relative z-[2]
   bg-gradient-to-br from-gold to-gold-dark border-0 rounded-none cursor-pointer transition-all duration-300
   uppercase tracking-[1.5px] shadow-[0_8px_16px_rgba(0,0,0,0.4)] overflow-hidden;
 }
@@ -477,7 +463,7 @@
 .try-again-button::before {
   @apply content-[''] absolute top-0 left-[-100%] w-full h-full
   bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)] 
-  transition-all duration-500 ease;
+  transition-all duration-500 ease-in-out;
 }
 
 .restart-button:hover,
@@ -511,20 +497,20 @@
 
 .statuesque-modal h2 {
   @apply text-8 font-black text-gold uppercase tracking-[1px] mb-4
-  shadow-[1px_1px_2px_rgba(0,0,0,0.2)] relative z-1;
+  shadow-[1px_1px_2px_rgba(0,0,0,0.2)] relative z-[1];
 }
 
 .statuesque-modal p {
   @apply text-4 text-text-dark text-left w-full
-  relative z-1;
+  relative z-[1];
 }
 
 .statuesque-modal .game-results-container {
-  @apply relative z-1;
+  @apply relative z-[1];
 }
 
 .statuesque-modal button {
-  @apply mt-4 relative z-1;
+  @apply mt-4 relative z-[1];
 }
 
 /* PLAYER NAME INPUT */
@@ -544,7 +530,7 @@
 
 /* SCORE SUBMISSION SECTION */
 .score-submission {
-  @apply flex flex-col items-center gap-4 mt-6 relative z-1;
+  @apply flex flex-col items-center gap-4 mt-6 relative z-[1];
 }
 
 .modal-button-group {
@@ -561,7 +547,7 @@
 .submit-score-button::before {
   @apply content-[''] absolute top-0 left-[-100%] w-full h-full
   bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)] 
-  transition-all duration-500 ease;
+  transition-all duration-500 ease-in-out;
 }
 
 .submit-score-button:hover:not(:disabled) {
@@ -579,7 +565,7 @@
 
 .leaderboard {
   @apply flex flex-col text-5 pt-1 items-start 
-  justify-start gap-4 w-full relative z-1;
+  justify-start gap-4 w-full relative z-[1];
 }
 
 .leaderboard h3 {
@@ -600,7 +586,7 @@
 .switch-sort-button::before {
   @apply content-[''] absolute top-0 left-[-100%] w-full h-full
   bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)] 
-  transition-all duration-500 ease;
+  transition-all duration-500 ease-in-out;
 }
 
 .switch-sort-button:hover {
