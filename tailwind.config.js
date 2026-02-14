@@ -25,6 +25,13 @@ export default {
         serif: ['EB Garamond', 'serif'],
         sans: ['Lexend', 'sans-serif'],
       },
+      fontSize: {
+        '2': '0.9rem',
+        '3': '1rem',
+        '4': '1.1rem',
+        '5': '1.25rem',
+        '8': '2.5rem',
+      },
       keyframes: {
         'pose-pulse': {
           '0%, 100%' : { transform: 'scale(1)' },
@@ -33,16 +40,6 @@ export default {
       },
       animation: {
         'pose-pulse' : 'pose-pulse 0.6s ease-out',
-      },
-      fontSize: {
-        '1': '34px',
-        '2': '18px',
-        '3': '14px',
-        '4': '12px',
-        '5': '20px',
-        '6': '16px',
-        '7': '28px',
-        '8': '32px',
       }
     },
   },

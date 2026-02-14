@@ -51,19 +51,18 @@
   @apply bg-gradient-to-br from-gold to-gold-dark transform translate-y-[-2px] shadow-[0_6px_12px_rgba(212,175,55,0.4)];
 }
 
-
 .status .message {
   @apply font-semibold text-gold;
 }
 
 .intro-overlay {
-  @apply fixed insert-0 flex items-center justify-center bg-black/85 z-[9999] backdrop-blur-[2px];
+  @apply fixed inset-0 flex items-center justify-center bg-black/85 z-[9999] backdrop-blur-[2px];
 }
 
 .intro-content {
   @apply flex flex-col items-center gap-2 relative overflow-hidden p-5 rounded-none
     w-[92vw] max-w-[1400px] h-[86vh] 
-    bg-gradient-to-br from-papyrus-medium/95 to to-papyrus-light/95
+    bg-gradient-to-br from-papyrus-medium/95 to-papyrus-light/95
     border-[3px] border-bronze-dark 
     shadow-[inset_0_0_40px_rgba(0,0,0,0.2),0_20px_60px_rgba(0,0,0,0.8),0_0_0_3px_var(--bronze-dark)];
 }
@@ -76,16 +75,12 @@
   @apply w-full h-[calc(86vh-84px)] object-contain rounded-none shadow-[inset_0_0_20px_rgba(0,0,0,0.3),0_8px_20px_rgba(0,0,0,0.5)] border-2 border-bronze-dark;
 }
 
-@media (max-width: 1000px) {
-  .intro-content {
-    @apply w-[96vw] h-[78vh];
-  }
+.intro-content {
+  @apply max-[1000px]:w-[96vw] h-[78vh];
 }
 
-@media (max-width: 640px) {
-  .intro-content {
-    @apply w-[96vw] h-[66vh];
-  }
+.intro-content {
+  @apply max-[640px]:w-[96vw] h-[66vh];
 }
 
 .intro-actions {
@@ -93,7 +88,7 @@
 }
 
 .intro-next {
-  @apply bg-gradient-to-br from-papyrus-light to-gold color-text-dark 
+  @apply bg-gradient-to-br from-papyrus-light to-gold text-text-dark 
   px-6 py-3 rounded-none font-bold cursor-pointer transition-all duration-300 
   shadow-[0_4px_12px_rgba(0,0,0,0.4)] 
   tracking-[1px] text-sm;
@@ -104,11 +99,11 @@
 }
 
 .intro-start {
-  @apply bg-gradient-to-br from-gold to-gold-dark color-text-dark
+  @apply bg-gradient-to-br from-gold to-gold-dark text-text-dark
 }
 
 .intro-close {
-  @apply absolute bg-bronze-dark color-papyrus-light border-0 text-2xl 
+  @apply absolute bg-bronze-dark text-papyrus-light border-0 text-2xl 
   leading-[1] cursor-pointer w-11 h-11 flex 
   items-center justify-center transition-all 
   duration-200 shadow-[0_2px_8px_rgba(0,0,0,0.5)];
@@ -127,12 +122,12 @@
 
 .page-card::before {
   @apply content-[''] absolute inset-0 
-  bg-[linear-gradient(90deg,transparent,transparent_2px,rgba(0,0,0,0.02)_2px,rgba(0,0,0,0.02)_4px),
-  linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.02)_2px,rgba(0,0,0,0.02)_4px)];
+  bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)] 
+  transition-all duration-500 ease;
 }
 
 .meta {
-  @apply color-text-dark font-semibold mb-2;
+  @apply text-text-dark font-semibold mb-2;
 }
 
 .pose-card {
@@ -143,7 +138,7 @@
 }
 
 .pose-image {
-  @apply text-transform-none
+  @apply normal-case;
 }
 
 .idle-box {
@@ -174,7 +169,7 @@
 /* LEFT PANEL: WEBCAM */
 .statuesque-left-panel {
   @apply flex flex-col items-center justify-center 
-  bg-gradient-to-br from-stone-dark to-bronze-dark border-6 border-bronze-medium 
+  bg-gradient-to-br from-stone-dark to-bronze-dark border-[6px] border-bronze-medium 
   shadow-[inset_0_0_30px_rgba(0,0,0,0.6),0_15px_40px_rgba(0,0,0,0.8),0_0_0_2px_var(--gold)] 
   relative overflow-hidden aspect-[4/3];
 }
@@ -197,9 +192,9 @@
 /* RIGHT PANEL: POSE DISPLAY OR INFO */
 
 .statuesque-right-panel {
-  @apply flex direction-col items-center justify-center 
+  @apply flex flex-col items-center justify-center 
    bg-gradient-to-br from-papyrus-medium to-papyrus-light 
-   border-6 border-bronze-medium 
+   border-[6px] border-bronze-medium 
    shadow-[inset_0_0_30px_rgba(0,0,0,0.1),0_15px_40px_rgba(0,0,0,0.8),0_0_0_2px_var(--gold)] 
    relative overflow-hidden aspect-[4/3];
 }
@@ -216,34 +211,34 @@
 
 .pose-display canvas {
   @apply w-full h-full object-contain 
-  rounded-none block filter-[drop-shadow(0_4px_8px_rgba(0,0,0,0.2))] 
-  transform-[rotateY(180deg)];
+  rounded-none block drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] 
+  [transform:rotateY(180deg)];
 }
 
 .pose-info {
   @apply absolute bg-gradient-to-t from-black/90 to-black/60 p-4 text-center 
-  border-t-2 border-bronze-light z-3 w-full z-3;
+  border-t-2 border-bronze-light z-3 w-full;
 }
 
 .level-indicator {
-  @apply text-3 color-gold font-semibold uppercase tracking-[1px] mb-1
+  @apply text-3 text-gold font-semibold uppercase tracking-[1px] mb-1
   shadow-[1px_1px_2px_rgba(0,0,0,0.7)];
 }
 
 .pose-counter {
-  @apply text-2 color-papyrus-light font-semibold tracking-[0.5px]
+  @apply text-2 text-papyrus-light font-semibold tracking-[0.5px]
   shadow-[2px_2px_4px_rgba(0,0,0,0.7)];
 }
 
 .countdown-display {
-  @apply text-2 mt-2 font italic
-  color-papyrus-light font-semibold tracking-[0.5px]
+  @apply text-2 mt-2 italic
+  text-papyrus-light font-semibold tracking-[0.5px]
   shadow-[2px_2px_4px_rgba(0,0,0,0.7)];
 }
 
 .countdown-number {
   @apply text-3 mt-1
-  color-gold font-bold tracking-[1px]
+  text-gold font-bold tracking-[1px]
   shadow-[3px_3px_6px_rgba(0,0,0,0.8)];
 }
 
@@ -256,7 +251,7 @@
 }
 
 .current-pose-name {
-  @apply text-2 color-papyrus-light font-semibold font italic p-2 border-2 border-bronze-light rounded-none
+  @apply text-2 text-papyrus-light font-semibold italic p-2 border-2 border-bronze-light rounded-none
   tracking-[0.5px] shadow-[2px_2px_4px_rgba(0,0,0,0.7)];
 }
 
@@ -275,24 +270,23 @@
 }
 
 .start-button {
-  @apply p-3.5 p-x-10 text-2 font-bold text-text-dark relative z-2
+  @apply p-3.5 px-10 text-2 font-bold text-text-dark relative z-2
   bg-gradient-to-br from-gold to-gold-dark border-0 rounded-none cursor-pointer transition-all duration-300
-  uppercase tracking-[1.5px] font-serif shadow-[0_8px_16px_rgba(0,0,0,0.4)] relative overflow-hidden;
+  uppercase tracking-[1.5px] shadow-[0_8px_16px_rgba(0,0,0,0.4)] relative overflow-hidden;
 }
 
 .start-button::before {
-  @apply content-[''] absolute top-0 left-[-100%] width-full height-full
-  bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)] transition-left duration-500 ease;
-  transform left 0.5s ease;
+  @apply content-[''] absolute top-0 left-[-100%] w-full h-full
+  bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)] transition-all duration-500 ease;
 }
 
 .start-button:hover:not(:disabled) {
   @apply bg-gradient-to-br from-gold to-gold-dark
-  box-shadow-[0_12px_24px_rgba(212,175,55,0.4)]
+  shadow-[0_12px_24px_rgba(212,175,55,0.4)]
 }
 
 .start-button:hover:not(:disabled)::before {
-  @apply left-100%;
+  @apply left-full;
 }
 
 .start-button:disabled {
@@ -335,12 +329,12 @@
 }
 
 .seq-item .label {
-  @apply color-text-dark text-3 font-semibold tracking-[0.5px];
+  @apply text-text-dark text-3 font-semibold tracking-[0.5px];
 }
 
 .seq-item.highlight {
-  @apply box-shadow-[0_0_0_3px_var(--gold),0_4px_8px_rgba(212,175,55,0.3)] translate-y-[-2px]
-  bg-gradient-to-br from-gold to-papyrus-light border-color-gold;
+  @apply shadow-[0_0_0_3px_var(--gold),0_4px_8px_rgba(212,175,55,0.3)] translate-y-[-2px]
+  bg-gradient-to-br from-gold to-papyrus-light border-gold;
 }
 
 .seq-item.filled {
@@ -349,62 +343,58 @@
 
 .seq-item.wrong {
   @apply bg-gradient-to-br from-papyrus-light to-papyrus-light border-bronze-medium 
-  border-color-red-ochre shadow-[0_2px_6px_rgba(255,0,0,0.5)] translate-y-[-1px];
+  border-red-ochre shadow-[0_2px_6px_rgba(255,0,0,0.5)] translate-y-[-1px];
 }
 
 /* RESPONSIVE */
-@media (max-width: 1024px) {
-  .statuesque-container {
-    @apply grid-cols-1 gap-5;
-  }
-
-  .statuesque-left-panel,
-  .statuesque-right-panel {
-    @apply aspect-auto h-380px;
-  }
-
-  .idle-message h2 {
-    @apply text-2xl;
-  }
+.statuesque-container {
+  @apply max-[1024px]:max-w-[1024px] max-[1024px]:gap-5;
 }
 
-@media (max-width: 640px) {
-  .statuesque-root {
-    @apply p-3;
-  }
+.statuesque-left-panel,
+.statuesque-right-panel {
+  @apply max-[1024px]:aspect-auto max-[1024px]:h-[380px];
+}
 
-  .statuesque-container {
-    @apply gap-3;
-  }
+.idle-message h2 {
+  @apply text-2xl;
+}
 
-  .statuesque-left-panel,
-  .statuesque-right-panel {
-    @apply h-[280px] p-4 border-[4px];
-  }
+.statuesque-root {
+  @apply max-w-full p-3;
+}
 
-  .idle-message h2 {
-    @apply text-xl tracking-[1px];
-  }
+.statuesque-container {
+  @apply gap-3;
+}
 
-  .idle-message p {
-    @apply text-3;
-  }
+.statuesque-left-panel,
+.statuesque-right-panel {
+  @apply h-[280px] p-4 border-[4px];
+}
 
-  .start-button {
-    @apply py-2 px-6 text-sm tracking-[1px];
-  }
+.idle-message h2 {
+  @apply text-xl tracking-[1px];
+}
 
-  .pose-info {
-    @apply p-3;
-  }
+.idle-message p {
+  @apply text-3;
+}
 
-  .level-indicator {
-    @apply text-xs;
-  }
+.start-button {
+  @apply py-2 px-6 text-sm tracking-[1px];
+}
 
-  .pose-counter {
-    @apply text-4;
-  }
+.pose-info {
+  @apply p-3;
+}
+
+.level-indicator {
+  @apply text-xs;
+}
+
+.pose-counter {
+  @apply text-4;
 }
 
 /* LEGACY SUPPORT */
@@ -418,12 +408,12 @@
 }
 
 .statuesque-info {
-  @apply text-4 text align-center color-papyrus-light 
+  @apply text-4 text-center text-papyrus-light 
   font-semibold tracking-[0.5px];
 }
 
 .camera-wrap {
-  @apply flex 1 w-full p-2 box-border flex-col gap-2;
+  @apply flex flex-col flex-1 w-full p-2 box-border gap-2;
 }
 
 .camera-wrap video,
@@ -433,16 +423,16 @@
 
 .ending-screen,
 .gameover-screen {
-  @apply flex w-full flex-col items-center justify-center gap-6 text-center
+  @apply flex flex-col w-full items-center justify-center gap-6 text-center
 }
 
 .game-results-container {
-  @apply m-5 text-3 text align-left w-full;
+  @apply m-5 text-3 text-left w-full;
 }
 
 .game-results-container h3 {
-  @apply color-gold text transform uppercase
-  letter-spacing-[1px] mb-3;
+  @apply text-gold uppercase
+  tracking-[1px] mb-3;
 }
 
 .result-item {
@@ -451,11 +441,11 @@
 }
 
 .result-item > div:first-child {
-  @apply text-3 color-text-dark m-1;
+  @apply text-3 text-text-dark m-1;
 }
 
 .result-item > div:nth-child(2) {
-  @apply text-4 color-bronze-medium m-1;
+  @apply text-4 text-bronze-medium m-1;
 }
 
 .result-item > div:nth-child(3) {
@@ -463,54 +453,54 @@
 }
 
 .result-passed {
-  @apply color-green-700;
+  @apply text-green-700;
 }
 
 .result-failed {
-  @apply color-red-ochre;
+  @apply text-red-ochre;
 }
 
 /* Canvas positioning for pose display */
 .pose-display-canvas {
-  @apply w-full h-full display-block object-contain;
+  @apply w-full h-full block object-contain;
 }
 
 /* Button styles for ending/gameover screens */
 .restart-button,
 .try-again-button {
-  @apply p-3.5 p-x-10 text-2 font-bold color-text-dark relative z-2
+  @apply p-3.5 px-10 text-2 font-bold text-text-dark relative z-2
   bg-gradient-to-br from-gold to-gold-dark border-0 rounded-none cursor-pointer transition-all duration-300
-  uppercase tracking-[1.5px] font-serif shadow-[0_8px_16px_rgba(0,0,0,0.4)] relative overflow-hidden;
+  uppercase tracking-[1.5px] shadow-[0_8px_16px_rgba(0,0,0,0.4)] overflow-hidden;
 }
 
 .restart-button::before,
 .try-again-button::before {
-  @apply content-[''] absolute top-0 left-[-100%] width-full height-full
+  @apply content-[''] absolute top-0 left-[-100%] w-full h-full
   bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)] 
-  transition-left duration-500 ease;
+  transition-all duration-500 ease;
 }
 
 .restart-button:hover,
 .try-again-button:hover {
-  @apply transform translate-y-[-2px] 
+  @apply translate-y-[-2px] 
   shadow-[0_12px_24px_rgba(212,175,55,0.4)];
 }
 
 .restart-button:hover::before,
 .try-again-button:hover::before {
-  @apply left-100%;
+  @apply left-full;
 }
 
 .statuesque-overlay {
-  @apply fixed flex align-items-center justify-center
+  @apply fixed flex items-center justify-center
   bg-black/85 z-[9999] backdrop-blur-[2px];
 }
 
 .statuesque-modal {
   @apply bg-gradient-to-br from-papyrus-medium to-papyrus-light
-  border-1 p-10 max-w-[500px] w-[90vw] max-h-[80vh] overflow-y-auto
-  box shadow-[inset_0_0_30px_rgba(0,0,0,0.1),0_20px_60px_rgba(0,0,0,0.8),0_0_0_3px_var(--gold)]
-  relative text-center color-text-dark;
+  border p-10 max-w-[500px] w-[90vw] max-h-[80vh] overflow-y-auto
+  shadow-[inset_0_0_30px_rgba(0,0,0,0.1),0_20px_60px_rgba(0,0,0,0.8),0_0_0_3px_var(--gold)]
+  relative text-center text-text-dark;
 }
 
 .statuesque-modal::before {
@@ -520,43 +510,41 @@
 }
 
 .statuesque-modal h2 {
-  @apply text-8 font weight-900 text-gold uppercase tracking-[1px] mb-4
-  text transform uppercase shadow-[1px_1px_2px_rgba(0,0,0,0.2)] relative z-1;
+  @apply text-8 font-black text-gold uppercase tracking-[1px] mb-4
+  shadow-[1px_1px_2px_rgba(0,0,0,0.2)] relative z-1;
 }
 
 .statuesque-modal p {
-  @apply text-4 color-text-dark text align-left w-full
+  @apply text-4 text-text-dark text-left w-full
   relative z-1;
 }
 
 .statuesque-modal .game-results-container {
-  @apply position-relative z-1;
+  @apply relative z-1;
 }
 
 .statuesque-modal button {
-  @apply m-top-4 relative z-1;
+  @apply mt-4 relative z-1;
 }
 
 /* PLAYER NAME INPUT */
 .player-name-input {
-  @apply w-full m-width-300px p-3 p-x-4
-  border-2 border-bronze-medium rounded-none bg-papyrus-light color-text-dark
-  text-4 box shadow-[0_2px_6px_rgba(0,0,0,0.2)] transition-all duration-300;
+  @apply w-full max-w-[300px] p-3 px-4
+  border-2 border-bronze-medium rounded-none bg-papyrus-light text-text-dark
+  text-4 shadow-[0_2px_6px_rgba(0,0,0,0.2)] transition-all duration-300;
 }
 
 .player-name-input:focus {
-  @apply border color-gold shadow-[0_0_0_3px_rgba(212,175,55,0.2),0_2px_6px_rgba(0,0,0,0.2)] bg-papyrus-light;
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2), 0 2px 6px rgba(0, 0, 0, 0.2);
-  bgcolor: var(--papyrus-light);
+  @apply border text-gold shadow-[0_0_0_3px_rgba(212,175,55,0.2),0_2px_6px_rgba(0,0,0,0.2)] bg-papyrus-light;
 }
 
 .player-name-input::placeholder {
-  @apply color-papyrus-medium italic opacity-70;
+  @apply text-papyrus-medium italic opacity-70;
 }
 
 /* SCORE SUBMISSION SECTION */
 .score-submission {
-  @apply flex flex-direction column items-center gap-4 m-top-6 relative z-1;
+  @apply flex flex-col items-center gap-4 mt-6 relative z-1;
 }
 
 .modal-button-group {
@@ -564,16 +552,16 @@
 }
 
 .submit-score-button {
-  @apply p-3.5 p-x-10 text-2
-  color-text-dark bg-gradient-to-br from-gold to-gold-dark border-0 rounded-none cursor-pointer transition-all duration-300
+  @apply p-3.5 px-10 text-2
+  text-text-dark bg-gradient-to-br from-gold to-gold-dark border-0 rounded-none cursor-pointer transition-all duration-300
   uppercase tracking-[1.5px] shadow-[0_8px_16px_rgba(0,0,0,0.4)] 
   relative overflow-hidden;
 }
 
 .submit-score-button::before {
-  @apply content-[''] absolute top-0 left-[-100%] width-full height-full
+  @apply content-[''] absolute top-0 left-[-100%] w-full h-full
   bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)] 
-  transition-left duration-500 ease;
+  transition-all duration-500 ease;
 }
 
 .submit-score-button:hover:not(:disabled) {
@@ -590,13 +578,13 @@
 }
 
 .leaderboard {
-  @apply flex flex-col text-5 p-top-1 items-start 
+  @apply flex flex-col text-5 pt-1 items-start 
   justify-start gap-4 w-full relative z-1;
 }
 
 .leaderboard h3 {
-  @apply flex flex-col text-8 color-gold uppercase tracking-[1px]
-  line-height-1 align self-center;
+  @apply flex flex-col text-8 text-gold uppercase tracking-[1px]
+  leading-none self-center;
 }
 
 .leaderboard ol {
@@ -604,15 +592,15 @@
 }
 
 .switch-sort-button {
-  @apply p-2 text-4 font-bold color-text-dark align-self-center
+  @apply p-2 text-4 font-bold text-text-dark self-center
   bg-gradient-to-br from-papyrus-light to-papyrus-light border-2 border-bronze-medium rounded-none
   shadow-[0_2px_6px_rgba(0,0,0,0.2)] transition-all duration-300 relative;
 }
 
 .switch-sort-button::before {
-  @apply content-[''] absolute top-0 left-[-100%] width-full height-full
+  @apply content-[''] absolute top-0 left-[-100%] w-full h-full
   bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)] 
-  transition-left duration-500 ease;
+  transition-all duration-500 ease;
 }
 
 .switch-sort-button:hover {
@@ -620,5 +608,5 @@
 }
 
 .switch-sort-button:hover::before {
-  @apply left-100%;
+  @apply left-full;
 }
