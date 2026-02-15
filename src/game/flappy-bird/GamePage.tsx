@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {WebcamCapture, type WebcamCaptureHandle } from "../../pose-detection/WebcamCapture";
 import { isMouthOpen } from "../../pose-utils";
 
@@ -11,7 +11,7 @@ const BIRD_X = 50;
 const PIPE_GAP = 160;
 const PIPE_WIDTH = 60;
 
-export default function GamePage({ onGameOver }: { onGameOver: (score: number) => void }) {
+export default function GamePage(_props: any) {
     const webcamRef = useRef<WebcamCaptureHandle>(null);
     const [birdY, setBirdY] = useState(300);
     const birdVelocity = useRef(0);

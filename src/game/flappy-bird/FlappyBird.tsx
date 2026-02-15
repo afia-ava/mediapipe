@@ -1,11 +1,11 @@
 import { useState } from "react";
 import GamePage from "./GamePage";
+import "./FlappyBird.css";
 
 export default function FlappyBird() {
     const [gameState, setGameState] = useState("menu");
     const [score, setScore] = useState(0);
     const [playerName, setPlayerName] = useState("");
-    const [isSubmittingScore, setIsSubmittingScore] = useState(false);
 
     const handleGameOver = (finalScore: number) => {
         setScore(finalScore);
@@ -22,7 +22,7 @@ export default function FlappyBird() {
     }
      
     return (
-        <div>
+        <div className="flappy-root">
             {gameState === "menu" && (
                 <div style={{ textAlign: "center", paddingTop: "100px", color: "white" }}>
                     <h1>Flappy Bird</h1>
@@ -45,9 +45,9 @@ export default function FlappyBird() {
 
                     <button
                         onClick={handleSubmitScore}
-                        disabled={isSubmittingScore || !playerName.trim()}
+                        disabled={!playerName.trim()}
                     >
-                        {isSubmittingScore ? "Submitting..." : "Submit Score"}
+                        Submit Score
                     </button>
 
                     <button onClick={() => setGameState("menu")}>Back to Menu</button>

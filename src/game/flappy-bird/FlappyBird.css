@@ -1,0 +1,32 @@
+.flappy-root {
+    @apply w-full h-full min-h-screen flex flex-col items-center justify-center p-5
+    bg-stone-900 text-papyrus-light;
+}
+
+.flappy-container {
+    @apply relative w-[800px] h-[600px] overflow-hidden bg-stone-800
+    border-4 border-bronze-medium shadow-2xl;
+}
+
+.bird {
+    @apply absolute rounded-full bg-gold border-2 border-bronze-dark shadow-lg;
+}
+
+.pipe {
+    @apply absolute bg-papyrus-medium border-2 border-bronze-medium;
+}
+
+.flappy-score {
+    @apply absolute top-8 left-1/2 -translate-x-1/2 z-20
+    text-5xl font-bold text-gold drop-shadow-md italic;
+}
+
+.flappy-menu {
+    @apply flex flex-col items-center justify-center gap-6 p-10
+    bg-papyrus-light border-4 border-bronze-medium text-text-dark;
+}
+
+.btn-statue {
+    @apply px-8 py-3 bg-gold text-text-dark font-bold uppercase
+    border-2 border-bronze-dark transition-transform active:scale-95;
+}
