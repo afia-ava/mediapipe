@@ -10,101 +10,144 @@ const PIPE_SPAWN_RATE = 1500;
 const BIRD_X = 50;
 const PIPE_GAP = 160;
 const PIPE_WIDTH = 60;
+const BIRD_SIZE = 40;
 
-export default function GamePage(_props: any) {
+interface GamePageProps {
+    onGameOver: (score: number) => void;
+}
+
+export default function GamePage({ onGameOver }: GamePageProps) {
     const webcamRef = useRef<WebcamCaptureHandle>(null);
     const [birdY, setBirdY] = useState(300);
+    const birdYRef = useRef(300);
     const birdVelocity = useRef(0);
     const [score, setScore] = useState(0);
+    const scoreRef = useRef(0);
     const wasMouthOpenRef = useRef(false);
     const [pipes, setPipes] = useState<{ x: number; topHeight: number; id: number; passed: boolean }[]>([]);
+    const pipesRef = useRef<{ x: number; topHeight: number; id: number; passed: boolean }[]>([]);
     const lastPipeSpawn = useRef<number>(Date.now());
     const pipeIdCounter = useRef<number>(0);
+    const [isMouthCurrentlyOpen, setIsMouthCurrentlyOpen] = useState(false);
 
     useEffect(() => {
+        webcamRef.current?.start();
         let animationFrameId: number;
+        let isGameOver = false;
+
         const update = () => {    
+            if (isGameOver) return;
+
             const faceResult = webcamRef.current?.getFaceResult();
             const mouthIsOpen = isMouthOpen(faceResult);
+            setIsMouthCurrentlyOpen(mouthIsOpen);
+
             if (mouthIsOpen && !wasMouthOpenRef.current) {
                 birdVelocity.current = JUMP_STRENGTH;
             }
             wasMouthOpenRef.current = mouthIsOpen;
 
             birdVelocity.current += GRAVITY;
-            setBirdY(y => y + birdVelocity.current);
+            birdYRef.current += birdVelocity.current;
+            setBirdY(birdYRef.current);
 
-            //move pipes
-            setPipes(prevPipes => {
-                prevPipes.forEach(p => {
-                    // If bird just passed the pipe's right edge
-                    if (p.x + PIPE_WIDTH < BIRD_X && !p.passed) {
-                        setScore(s => s + 1);
-                        p.passed = true; 
+            // Collision check: Floor or Ceiling
+            if (birdYRef.current < 0 || birdYRef.current > 600 - BIRD_SIZE) {
+                isGameOver = true;
+                onGameOver(scoreRef.current);
+                return;
+            }
+
+            // Move pipes and check collisions
+            const nextPipes = pipesRef.current
+                .map(p => ({ ...p, x: p.x - PIPE_SPEED }))
+                .filter(p => p.x > -PIPE_WIDTH);
+
+            for (const p of nextPipes) {
+                // If bird just passed the pipe's right edge
+                if (p.x + PIPE_WIDTH < BIRD_X && !p.passed) {
+                    p.passed = true; 
+                    scoreRef.current += 1;
+                    setScore(scoreRef.current);
+                }
+
+                // Pipe Collision Logic
+                const birdRight = BIRD_X + BIRD_SIZE;
+                const birdBottom = birdYRef.current + BIRD_SIZE;
+                
+                if (BIRD_X < p.x + PIPE_WIDTH && birdRight > p.x) {
+                    // X overlap exists, now check Y
+                    if (birdYRef.current < p.topHeight || birdBottom > p.topHeight + PIPE_GAP) {
+                        isGameOver = true;
+                        onGameOver(scoreRef.current);
+                        return;
                     }
-                });
+                }
+            }
 
-                return prevPipes
-                    .filter(p => p.x > -PIPE_WIDTH)
-                    .map(p => ({ ...p, x: p.x - PIPE_SPEED }));
-            });
+            pipesRef.current = nextPipes;
+            setPipes(nextPipes);
 
-            //spawn new pipes
+            // Spawn new pipes
             if (Date.now() - lastPipeSpawn.current > PIPE_SPAWN_RATE) {
                 const randomHeight = Math.floor(Math.random() * 200) + 100;
-                setPipes(prev => [...prev, {
+                pipesRef.current.push({
                     x: 800,
                     topHeight: randomHeight,
                     id: pipeIdCounter.current++,
                     passed: false
-                }]);
+                });
                 lastPipeSpawn.current = Date.now();
             }
             animationFrameId = requestAnimationFrame(update);
         };
 
         animationFrameId = requestAnimationFrame(update);
-        return () => cancelAnimationFrame(animationFrameId);
-    }, []);
+        return () => {
+            isGameOver = true;
+            cancelAnimationFrame(animationFrameId);
+        };
+    }, [onGameOver]);
 
     return (
-        <div 
-            className="flappy-game-container"
-            style={{
-                position: 'relative',
-                width: '800px',
-                height: '600px',
-                margin: '0 auto',
-                border: '4px solid #555',
-                overflow: 'hidden',
-                backgroundColor: "#70c5ce",
-            }}
-        >
-            <WebcamCapture ref={webcamRef} width="0px" height="0px"/>
+        <div className="flappy-container">
+            <div className="webcam-preview">
+                <WebcamCapture ref={webcamRef} width="160px" height="120px"/>
+            </div>
 
             {/* Score Display */}
-            <div style={{ position: 'absolute', top: 10, left: 10, fontSize: '32px', fontWeight: 'bold', color: '#333' }}>
-                Score: {score}
+            <div className="flappy-score">
+                {score}
+            </div>
+
+            {/* Mouth Indicator */}
+            <div className="mouth-indicator">
+                <div className={`status-dot ${isMouthCurrentlyOpen ? 'status-open' : 'bg-red-500'}`} />
+                <span className="text-xs uppercase tracking-widest font-bold">
+                    {isMouthCurrentlyOpen ? 'Jump!' : 'Closed'}
+                </span>
             </div>
             
             <div
                 className="bird"
                 style={{
-                    position: "absolute",
                     top: birdY, 
                     left: BIRD_X,
                     width: '40px',
                     height: '40px',
-                    backgroundColor: "#70c5ce",
-                    borderRadius: '50%',
-                    border: '2px solid orange',
                     zIndex: 5
                 }}
             />
             {pipes.map(pipe => (
                 <React.Fragment key={pipe.id}>
-                    <div style={{ position: 'absolute', left: pipe.x, top: 0, width: PIPE_WIDTH, height: pipe.topHeight, backgroundColor: 'green' }} />
-                    <div style={{ position: 'absolute', left: pipe.x, top: pipe.topHeight + PIPE_GAP, width: PIPE_WIDTH, height: 600, backgroundColor: 'green' }} />
+                    <div 
+                        className="pipe" 
+                        style={{ left: pipe.x, top: 0, width: PIPE_WIDTH, height: pipe.topHeight }} 
+                    />
+                    <div 
+                        className="pipe"
+                        style={{ left: pipe.x, top: pipe.topHeight + PIPE_GAP, width: PIPE_WIDTH, height: 600 }} 
+                    />
                 </React.Fragment>
             ))}
         </div>
