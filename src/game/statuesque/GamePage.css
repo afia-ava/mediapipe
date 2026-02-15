@@ -227,7 +227,8 @@
 }
 
 .webcam-phase-info {
-  @apply flex flex-col items-center justify-center gap-5 text-center z-[2] relative;
+  @apply absolute bottom-0 left-0 w-full p-4 max-[1024px]:p-3 text-center z-[3]
+  bg-gradient-to-t from-black/95 to-black/60;
 }
 
 .webcam-phase-info.pulsing {
@@ -235,7 +236,7 @@
 }
 
 .current-pose-name {
-  @apply text-2 text-text-dark font-semibold italic p-2 border-2 border-bronze-light rounded-none
+  @apply text-2 text-papyrus-light font-semibold italic p-2 border-2 border-bronze-light rounded-none
   tracking-[0.5px] shadow-[2px_2px_4px_rgba(0,0,0,0.7)];
 }
 
