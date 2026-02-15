@@ -24,3 +24,7 @@ export {
   drawNormalizedLandmarks,
   type DrawLandmarksConfig
 } from "./drawLandmarks";
+
+export {
+  isMouthOpen
+} from "./mouthDetection";

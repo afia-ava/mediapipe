@@ -21,9 +21,7 @@ const DB_NAME = "StatuesqueDB";
 const STORE_NAME = "PoseLandmarks";
 const DB_VERSION = 1;
 
-/**
- * Represents stored pose data.
- */
+// Represents stored pose data.
 export interface StoredPoseData {
   id: string;
   filename: string;
@@ -32,16 +30,12 @@ export interface StoredPoseData {
   timestamp: number;
 }
 
-/**
- * Initialize IndexedDB for caching pose landmarks.
- */
+// Initialize IndexedDB for caching pose landmarks.
 function initializeDB(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);
-
     request.onerror = () => reject(request.error);
     request.onsuccess = () => resolve(request.result);
-
     request.onupgradeneeded = (event) => {
       const db = (event.target as IDBOpenDBRequest).result;
       if (!db.objectStoreNames.contains(STORE_NAME)) {
@@ -51,9 +45,7 @@ function initializeDB(): Promise<IDBDatabase> {
   });
 }
 
-/**
- * Save pose landmarks to IndexedDB.
- */
+// Save pose landmarks to IndexedDB. 
 async function savePoseToCache(data: StoredPoseData): Promise<void> {
   const db = await initializeDB();
   return new Promise((resolve, reject) => {
@@ -66,9 +58,7 @@ async function savePoseToCache(data: StoredPoseData): Promise<void> {
   });
 }
 
-/**
- * Retrieve pose landmarks from IndexedDB cache.
- */
+// Retrieve pose landmarks from IndexedDB cache. 
 export async function getPoseLandmarks(poseId: string): Promise<Landmark[] | null> {
   const db = await initializeDB();
   return new Promise((resolve, reject) => {
@@ -84,9 +74,7 @@ export async function getPoseLandmarks(poseId: string): Promise<Landmark[] | nul
   });
 }
 
-/**
- * Get all cached poses.
- */
+// Get all cached poses. 
 export async function getAllCachedPoses(): Promise<StoredPoseData[]> {
   const db = await initializeDB();
   return new Promise((resolve, reject) => {
@@ -99,9 +87,7 @@ export async function getAllCachedPoses(): Promise<StoredPoseData[]> {
   });
 }
 
-/**
- * Delete a specific pose from the cache.
- */
+// Delete a specific pose from the cache. 
 async function deletePoseFromCache(poseId: string): Promise<void> {
   const db = await initializeDB();
   return new Promise((resolve, reject) => {
@@ -114,9 +100,7 @@ async function deletePoseFromCache(poseId: string): Promise<void> {
   });
 }
 
-/**
- * Clear all cached poses from IndexedDB.
- */
+// Clear all cached poses from IndexedDB. 
 export async function clearPoseCache(): Promise<void> {
   const db = await initializeDB();
   return new Promise((resolve, reject) => {
@@ -129,11 +113,8 @@ export async function clearPoseCache(): Promise<void> {
   });
 }
 
-/**
- * Initialize PoseLandmarker for pose extraction.
- */
+// Initialize PoseLandmarker for pose extraction. 
 let poseLandmarkerInstance: PoseLandmarker | null = null;
-
 async function getPoseLandmarkerInstance(): Promise<PoseLandmarker> {
   if (poseLandmarkerInstance) {
     return poseLandmarkerInstance;
@@ -155,9 +136,7 @@ async function getPoseLandmarkerInstance(): Promise<PoseLandmarker> {
   return poseLandmarkerInstance;
 }
 
-/**
- * Extract landmarks from a single image.
- */
+// Extract landmarks from a single image.
 async function extractLandmarksFromImage(imageUrl: string): Promise<Landmark[]> {
   const poseLandmarker = await getPoseLandmarkerInstance();
 
@@ -199,7 +178,7 @@ async function extractLandmarksFromImage(imageUrl: string): Promise<Landmark[]> 
 async function getImageFilesFromAssets(): Promise<Array<{ name: string; path: string }>> {
   try {
     const poseImages = import.meta.glob<{ default: string }>(
-      "../assets/poses/**/*.{jpg,jpeg,png,webp}",
+      "../assets/*.{jpg,jpeg,png,webp}",
       { eager: true }
     );
 

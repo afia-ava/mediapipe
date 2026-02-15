@@ -3,9 +3,17 @@ import PoseGame from "./PoseGame";
 import { Leaderboard } from "./Leaderboard"; 
 import "./GamePage.css";
 
+import pose1 from "../../assets/pose1.jpg";
+import pose2 from "../../assets/pose2.jpg";
+import pose3 from "../../assets/pose3.jpg";
+import pose4 from "../../assets/pose4.jpg";
+import pose5 from "../../assets/pose5.jpg";
+import pose6 from "../../assets/pose6.jpg";
+import pose7 from "../../assets/pose7.jpg";
+
 export default function GamePage() {
   const [showIntro, setShowIntro] = useState(true);
-  const SLIDES = ['/1.png','/2.png','/orpheus_ygt.png'];
+  const SLIDES = [pose1, pose2, pose3, pose4, pose5, pose6, pose7];
   const [slideIndex, setSlideIndex] = useState(0);
 
   return (

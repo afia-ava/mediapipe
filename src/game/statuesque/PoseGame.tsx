@@ -53,7 +53,7 @@ export default function PoseGame() {
     initPoses();
   }, []);
 
-  // ===== 1b. INITIALIZE WEBCAM =====
+  // INITIALIZE WEBCAM 
   useEffect(() => {
     const initWebcam = async () => {
       // Poll until model is ready (checks every 100ms)

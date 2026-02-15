@@ -17,6 +17,7 @@
 
 import {
   PoseLandmarker,
+  FaceLandmarker,
   FilesetResolver,
   DrawingUtils
 } from "@mediapipe/tasks-vision";
@@ -25,43 +26,31 @@ import type { Landmark } from "../pose-utils/comparePoses";
 import { extractLandmarksFromResult } from "../pose-utils/comparePoses";
 import "./webcam-capture.css";
 
-/**
- * Handle returned by useImperativeHandle for WebcamCapture.
- */
+// Handle returned by useImperativeHandle for WebcamCapture.
 export interface WebcamCaptureHandle {
-  /**
-   * Get the current landmarks from the most recent detection.
-   * Returns null if no detection has occurred yet.
-   */
-  getCurrentLandmarks: () => Landmark[] | null;
-  /**
-   * Start the webcam stream and pose detection.
-   */
+  // Get the current landmarks from the most recent detection. Returns null if no detection has occurred yet.
+  getCurrentLandmarks: () => any | null;
+  // Get current face results
+  getFaceResult: () => any | null;
+  // Start the webcam stream and pose detection.
   start: () => Promise<void>;
-  /**
-   * Stop the webcam stream and pose detection.
-   */
+  // Stop the webcam stream and pose detection.
   stop: () => void;
-  /**
-   * Check if webcam is currently running.
-   */
+  // Check if webcam is currently running.
   isRunning: () => boolean;
-  /**
-   * Check if the PoseLandmarker model is loaded and ready.
-   */
+  // Check if the PoseLandmarker model is loaded and ready.
   isModelReady: () => boolean;
-
   getCurrentFrame: () => HTMLVideoElement | null
 }
 
 interface WebcamCaptureProps {
-  /** CSS width for the video/canvas display */
+  // CSS width for the video/canvas display
   width?: string;
-  /** CSS height for the video/canvas display */
+  // CSS height for the video/canvas display 
   height?: string;
-  /** Optional className for the container */
+  // Optional className for the container 
   className?: string;
-  /** Optional callback when landmarks are updated */
+  // Optional callback when landmarks are updated
   onLandmarksUpdate?: (landmarks: Landmark[]) => void;
 }
 
@@ -78,6 +67,7 @@ export const WebcamCapture = forwardRef<WebcamCaptureHandle, WebcamCaptureProps>
 
     // Pose detection refs
     const poseLandmarkerRef = useRef<PoseLandmarker | null>(null);
+    const faceLandmarkerRef = useRef<FaceLandmarker | null>(null);
     const drawingUtilsRef = useRef<DrawingUtils | null>(null);
     const runningModeRef = useRef<RunningMode>("IMAGE");
     const lastVideoTimeRef = useRef<number>(-1);
@@ -89,6 +79,7 @@ export const WebcamCapture = forwardRef<WebcamCaptureHandle, WebcamCaptureProps>
 
     // Store current landmarks
     const currentLandmarksRef = useRef<Landmark[] | null>(null);
+    const currentFaceResultsRef = useRef<any | null>(null);
 
     // Initialize PoseLandmarker on mount
     useEffect(() => {
@@ -109,7 +100,8 @@ export const WebcamCapture = forwardRef<WebcamCaptureHandle, WebcamCaptureProps>
               numPoses: 1
             });
             console.log("PoseLandmarker model loaded with GPU delegate");
-          } catch (gpuError) {
+          } 
+          catch (gpuError) {
             // Fallback to CPU on mobile or if GPU fails
             console.warn("GPU delegate failed, falling back to CPU:", gpuError);
             poseLandmarkerRef.current = await PoseLandmarker.createFromOptions(vision, {
@@ -121,6 +113,22 @@ export const WebcamCapture = forwardRef<WebcamCaptureHandle, WebcamCaptureProps>
               numPoses: 1
             });
             console.log("PoseLandmarker model loaded with CPU delegate");
+          }
+          try {
+            faceLandmarkerRef.current = await FaceLandmarker.createFromOptions(vision, {
+              baseOptions: {
+                modelAssetPath: `https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task`,
+                delegate: "GPU"
+              },
+              outputFaceBlendshapes: true,
+              runningMode: "VIDEO",
+              numFaces: 1
+            });
+            console.log("FaceLandmarker loaded");
+          }
+          catch (faceError)
+          {
+            console.warn("FaceLandmarker failed to load:", faceError);
           }
           
           // Mark model as ready
@@ -170,6 +178,11 @@ export const WebcamCapture = forwardRef<WebcamCaptureHandle, WebcamCaptureProps>
       const startTimeMs = performance.now();
       if (lastVideoTimeRef.current !== videoRef.current.currentTime) {
         lastVideoTimeRef.current = videoRef.current.currentTime;
+
+        if (faceLandmarkerRef.current) {
+          const result = faceLandmarkerRef.current.detectForVideo(videoRef.current, startTimeMs);
+          currentFaceResultsRef.current = result;
+        }
 
         poseLandmarkerRef.current?.detectForVideo(videoRef.current, startTimeMs, (result: any) => {
           const canvasCtx = canvasRef.current?.getContext("2d");
@@ -280,6 +293,7 @@ export const WebcamCapture = forwardRef<WebcamCaptureHandle, WebcamCaptureProps>
     // Expose methods via useImperativeHandle
     useImperativeHandle(ref, () => ({
       getCurrentLandmarks: () => currentLandmarksRef.current,
+      getFaceResult: () => currentFaceResultsRef.current, 
       start: startWebcam,
       stop: stopWebcam,
       isRunning: () => webcamRunningRef.current,
