@@ -223,6 +223,13 @@ export const WebcamCapture = forwardRef<WebcamCaptureHandle, WebcamCaptureProps>
 
     // Start webcam
     async function startWebcam() {
+      // Wait for model to be ready (retry up to 50 times, 100ms apart = 5 seconds max)
+      let retries = 0;
+      while (!poseLandmarkerRef.current && retries < 50) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        retries++;
+      }
+      
       if (!poseLandmarkerRef.current) {
         console.error("PoseLandmarker not initialized");
         return;
