@@ -7,7 +7,8 @@ const BASE_GRAVITY = 0.2;
 const MAX_GRAVITY = 0.25;
 const JUMP_STRENGTH = -6;
 const PIPE_SPEED = 3;
-const PIPE_SPAWN_RATE = 4000;
+const PIPE_SPAWN_RATE = 5500;
+const MIN_PIPE_DISTANCE = 300;
 const BIRD_X = 50;
 const PIPE_GAP = 160;
 const PIPE_WIDTH = 60;
@@ -31,11 +32,26 @@ export default function GamePage({ onGameOver }: GamePageProps)
     const pipeIdCounter = useRef<number>(0);
     const [isMouthCurrentlyOpen, setIsMouthCurrentlyOpen] = useState(false);
     const lastJumpTimeRef = useRef<number>(0);
+    const [webcamReady, setWebcamReady] = useState(false);
 
     useEffect(() => {
         webcamRef.current?.start();
         let animationFrameId: number;
+        let webcamBecameReady = false;
         const update = () => {    
+            // Check if webcam is ready
+            if (!webcamBecameReady && webcamRef.current?.isRunning()) {
+                webcamBecameReady = true;
+                lastPipeSpawn.current = Date.now(); // Reset pipe spawn timer when webcam is ready
+                setWebcamReady(true);
+            }
+
+            // Don't run game logic until webcam is ready
+            if (!webcamBecameReady) {
+                animationFrameId = requestAnimationFrame(update);
+                return;
+            }
+
             //mouth detection jump
             const faceResult = webcamRef.current?.getFaceResult();
             const mouthIsOpen = isMouthOpen(faceResult);
@@ -66,8 +82,8 @@ export default function GamePage({ onGameOver }: GamePageProps)
                     .map(p => ({ ...p, x: p.x - PIPE_SPEED }))
                     .filter(p => p.x > -PIPE_WIDTH);
                 
-                //spawn pipes
-                if (Date.now() - lastPipeSpawn.current > PIPE_SPAWN_RATE) {
+                //spawn pipes only after webcam is ready
+                if (webcamBecameReady && Date.now() - lastPipeSpawn.current > PIPE_SPAWN_RATE) {
                     const randomHeight = Math.floor(Math.random() * 200) + 100;
                     nextPipes.push({
                         x: 800,
