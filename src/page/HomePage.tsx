@@ -15,9 +15,9 @@ export default function HomePage() {
             color: "from-papyrus-medium to papyrus-dark"
         },
         {
-            title: "Game 3",
-            description: "Still deciding",
-            route: "/game3",
+            title: "Distance Pong",
+            description: "Move farther and closer to play pong",
+            route: "/pong",
             color: "from-stone-medium to stone-dark"
         }
     ]
