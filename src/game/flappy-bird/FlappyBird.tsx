@@ -1,6 +1,8 @@
 import { useState } from "react";
 import GamePage from "./GamePage";
 import "./FlappyBird.css";
+import { Link } from "react-router-dom";
+
 
 export default function FlappyBird() {
     const [gameState, setGameState] = useState("menu");
@@ -52,7 +54,7 @@ export default function FlappyBird() {
                         Submit Score
                     </button>
 
-                    <button className="btn-statue" onClick={() => setGameState("menu")}>Back to Menu</button>
+                    <Link className="btn-statue" to="/">Back to Menu</Link>
                 </div>
             )}
         </div>

@@ -25,10 +25,10 @@ export default function HomePage() {
     return (
         <div className="min-h-screen flex flex-col items-center justify-center p-6">
             <h1 className="text-6xl font-bold text-gold mb-4 font-serif">
-                Statuesque
+                Kinesthetic Games
             </h1>
             <p className="text-2xl text-papyrus-light mb-12 font-serif">
-                Mimic Greek Pose Games
+                Play classic games with motion!
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

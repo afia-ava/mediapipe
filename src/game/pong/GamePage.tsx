@@ -1,7 +1,7 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {WebcamCapture, type WebcamCaptureHandle } from "../../pose-detection/WebcamCapture";
 import Pong from "./Pong";
-import "./pong.css";
+import { Link } from "react-router-dom";
 
 export default function GamePage() {
     const webcamRef = useRef<WebcamCaptureHandle>(null);
@@ -22,6 +22,22 @@ export default function GamePage() {
         setFinalScore(0);
         setGameState("playing");
     };
+
+    useEffect(() => {
+        if (gameState === "playing") {
+            webcamRef.current?.start();
+        }
+    }, [gameState]);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (webcamRef.current?.isRunning()) {
+                setWebcamReady(true);
+                clearInterval(interval);
+            }
+        }, 100);
+        return () => clearInterval(interval);
+    }, []);
 
     return (
         <div className="pong-page">
@@ -58,6 +74,7 @@ export default function GamePage() {
                     <button className="restart-button" onClick={handleRestart}>
                         Play Again
                     </button>
+                    <Link className="menu-button" to="/">Back to Menu</Link>
                 </div>
             )}
         </div>
