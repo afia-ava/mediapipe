@@ -60,7 +60,7 @@ export default function GamePage() {
         <section className="left">
           <div className="detector-area">
             <div className="central-box">
-              <PoseGame />
+              <PoseGame poseImages={POSE_IMAGES} />
             </div>
             <Leaderboard />
           </div>

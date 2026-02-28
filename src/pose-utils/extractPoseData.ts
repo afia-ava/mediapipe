@@ -177,16 +177,18 @@ async function extractLandmarksFromImage(imageUrl: string): Promise<Landmark[]> 
 
 async function getImageFilesFromAssets(): Promise<Array<{ name: string; path: string }>> {
   try {
-    const poseImages = import.meta.glob<{ default: string }>(
-      "../assets/*.{jpg,jpeg,png,webp}",
+    const poseImages = import.meta.glob(
+      "../../game/statuesque/assets/*.{jpg,jpeg,png,webp}",
       { eager: true }
     );
 
     const files = Object.entries(poseImages).map(([path, module]) => {
       const filename = path.split("/").pop() || path;
       const name = filename.replace(/\.[^.]+$/, "");
-      return { name, path: module.default };
+      return { name, path: (module as {default: string}).default };
     });
+
+    console.log("Statuesque pose images found:", files);
 
     if (files.length === 0) {
       console.warn("No pose images found. Check that images exist in /src/assets/poses/");
@@ -259,23 +261,34 @@ export async function extractAllPosesFromAssets(options?: {
         console.log(`[Pose Extraction] Processing: ${name}...`);
         const landmarks = await extractLandmarksFromImage(imagePath);
 
-        if (landmarks.length > 0) {
-          const poseData: StoredPoseData = {
-            id: poseId,
-            filename: name,
-            imageUrl: imagePath,
-            landmarks,
-            timestamp: Date.now()
-          };
+        // Always create poseData, even if landmarks are empty
+        const poseData: StoredPoseData = {
+          id: poseId,
+          filename: name,
+          imageUrl: imagePath,
+          landmarks,
+          timestamp: Date.now()
+        };
 
-          await savePoseToCache(poseData);
-          results.push(poseData);
+        await savePoseToCache(poseData);
+        results.push(poseData);
+        if (landmarks.length > 0) {
           console.log(`[Pose Extraction] ✓ Extracted: ${name}`);
         } else {
-          console.warn(`[Pose Extraction] No pose detected in: ${name}`);
+          console.warn(`[Pose Extraction] No pose detected in: ${name} (will still show image)`);
         }
       } catch (error) {
         console.error(`[Pose Extraction] Failed to extract from ${name}:`, error);
+        // Still show image even if extraction fails
+        const poseData: StoredPoseData = {
+          id: poseId,
+          filename: name,
+          imageUrl: imagePath,
+          landmarks: [],
+          timestamp: Date.now()
+        };
+        await savePoseToCache(poseData);
+        results.push(poseData);
       }
     }
 
