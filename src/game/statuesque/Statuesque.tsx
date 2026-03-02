@@ -15,12 +15,25 @@ import pose5 from "./assets/pose5.jpg";
 import pose6 from "./assets/pose6.jpg";
 import pose7 from "./assets/pose7.jpg";
 
+// Shuffle function
+function shuffleArray<T>(array: T[]): T[] {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 export default function GamePage() {
   const [showIntro, setShowIntro] = useState(true);
   const INTRO_SLIDES = [intro1, intro2, intro3];
   const [slideIndex, setSlideIndex] = useState(0);
 
-  const POSE_IMAGES = [pose1, pose2, pose3, pose4, pose5, pose6, pose7];
+  const [poseImages] = useState(() => shuffleArray([
+    pose1, pose2, pose3, pose4, pose5, pose6, pose7
+  ]));
+
   return (
     <div className="game-page">
       {showIntro && (
@@ -36,14 +49,15 @@ export default function GamePage() {
           <div className="intro-content">
             <img src={INTRO_SLIDES[slideIndex]} alt={`Intro ${slideIndex+1}`} className="intro-image" />
             <div className="intro-actions">
-              {slideIndex < INTRO_SLIDES.length - 1 ? (
+              {slideIndex < INTRO_SLIDES.length - 1 && (
                 <button
                   className="intro-next"
                   onClick={() => setSlideIndex((s) => Math.min(s + 1, INTRO_SLIDES.length - 1))}
                 >
                   Next
                 </button>
-              ) : (
+              )}
+              {slideIndex === INTRO_SLIDES.length - 1 && (
                 <button
                   className="intro-next intro-start"
                   onClick={() => setShowIntro(false)}
@@ -60,7 +74,7 @@ export default function GamePage() {
         <section className="left">
           <div className="detector-area">
             <div className="central-box">
-              <PoseGame poseImages={POSE_IMAGES} />
+                          <PoseGame poseImages={poseImages} />
             </div>
             <Leaderboard />
           </div>

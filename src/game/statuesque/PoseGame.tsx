@@ -140,6 +140,17 @@ export default function PoseGame({ poseImages }: { poseImages: string[] }) {
           matched = false;
         }
         setPoseMatched(matched);
+        setSimilarityResults(prev => {
+          const updated = [...prev];
+          updated[poseIndex] = similarity;
+          return updated;
+        });
+        setSelectedPoses(prev => {
+          const updated = [...prev];
+          updated[poseIndex] = { filename: poseImages[poseIndex] };
+          return updated;
+        });
+
         setTimeout(() => {
           if (matched) {
             setLevel(l => l + 1);
@@ -229,9 +240,9 @@ export default function PoseGame({ poseImages }: { poseImages: string[] }) {
           {started && phase === "webcam" && (
             <div className="webcam-phase-info">
               <div className="level-indicator">Level {level}</div>
-              <div className="pose-counter">
-                Pose {poseIndex + 1} / {poseCount}
-              </div>
+                <div className="pose-counter">
+                  Pose {poseIndex + 1} / {level}
+                </div>
               <div className="countdown-display">
                 Time left: <span className="countdown-number">{webcamCountdown}s</span>
               </div>
