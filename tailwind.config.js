@@ -24,7 +24,7 @@ export default {
       fontFamily: {
         serif: ['EB Garamond', 'serif'],
         sans: ['Lexend', 'sans-serif'],
-        architype: ['Architype Ingenier Dot', 'sans-serif'],
+        architype: ['Architype Ingenieur Dot', 'sans-serif'],
       },
       fontSize: {
         '2': '0.9rem',

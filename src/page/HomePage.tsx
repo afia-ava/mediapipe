@@ -21,8 +21,8 @@ export default function HomePage() {
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-white">
-            <h1 className="font-architype text-6xl font-bold text-black mb-4 font-serif mt-0 -mt-8">
-                Kinesthetic Games
+            <h1 className="font-architype text-6xl font-bold text-black mb-16 mt-0 -mt-12 tracking-widest">
+                kinesthetic games
             </h1>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {games.map((game, idx) => (
