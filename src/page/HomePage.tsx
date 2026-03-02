@@ -1,52 +1,37 @@
 import { Link } from 'react-router-dom';
+import kinesthetics1 from '../assets/kinesthetics1.png';
+import kinesthetics2 from '../assets/kinesthetics2.png';
+import kinesthetics3 from '../assets/kinesthetics3.png';
 
 export default function HomePage() {
     const games = [
         {
-            title: "Statusque",
-            description: "Mirror ancient Greek poses and pass to new levels",
             route: "/statuesque",
-            color: "from-gold to-bronze-light"
+            image: kinesthetics1
         },
         {
-            title: "Flappy Bird",
-            description: "Navigate through obstacles as a flying bird",
             route: "/flappy-bird",
-            color: "from-papyrus-medium to papyrus-dark"
+            image: kinesthetics2
         },
         {
-            title: "Distance Pong",
-            description: "Move farther and closer to play pong",
             route: "/pong",
-            color: "from-stone-medium to stone-dark"
+            image: kinesthetics3
         }
     ]
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center p-6">
-            <h1 className="text-6xl font-bold text-gold mb-4 font-serif">
+        <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-white">
+            <h1 className="font-architype text-6xl font-bold text-black mb-4 font-serif mt-0 -mt-8">
                 Kinesthetic Games
             </h1>
-            <p className="text-2xl text-papyrus-light mb-12 font-serif">
-                Play classic games with motion!
-            </p>
-
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {games.map((game) => (
+                {games.map((game, idx) => (
                     <Link
-                        key={game.title}
+                        key={idx}
                         to={game.route}
-                        className={`block p-6 rounded-lg shadow-lg text-center text-white font-serif bg-gradient-to-br ${game.color} transform transition-transform hover:scale-105`}
+                        className="block p-0.5 rounded-lg shadow-lg text-center bg-gradient-to-br from-neutral-800 to-neutral-900 transform transition-transform hover:scale-105 border border-neutral-400 flex justify-center items-center"
                     >
-                        <h2 className="text-3xl font-bold mb-2">
-                            {game.title}
-                        </h2>
-                        <p className="text-papyrus-light mb-4 font-serif">
-                            {game.description}
-                        </p>
-                        <div className="bg-gold text-stone-dark font-bold py-2 px-4 rounded-full hover:bg-gold-light transition-colors">
-                            Play
-                        </div>
+                        <img src={game.image} alt="Game" className="h-[30rem] w-[26rem] object-cover rounded-md" style={{margin: '1mm'}} />
                     </Link>
                 ))}
             </div>

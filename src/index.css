@@ -1,4 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800|Lexend:wght@100..900&display=swap');
+@font-face {
+    font-family: 'Architype Ingenier Dot';
+    src: url('./assets/fonts/ArchitypeIngenierDot-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 
 @tailwind base;
 @tailwind components;
