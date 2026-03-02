@@ -5,7 +5,7 @@ import { isMouthOpen } from "../../pose-utils";
 // game constants
 const BASE_GRAVITY = 0.2;
 const MAX_GRAVITY = 0.25;
-const JUMP_STRENGTH = -6;
+const JUMP_STRENGTH = -4;
 const PIPE_SPEED = 3;
 const PIPE_SPAWN_RATE = 5500;
 const MIN_PIPE_DISTANCE = 300;
@@ -20,6 +20,9 @@ interface GamePageProps {
 
 export default function GamePage({ onGameOver }: GamePageProps) 
 {
+    const [birdX, setBirdX] = useState(BIRD_X);
+    const birdXRef = useRef(BIRD_X);
+    const birdVX = useRef(0);
     const webcamRef = useRef<WebcamCaptureHandle>(null);
     const [birdY, setBirdY] = useState(300);
     const birdYRef = useRef(300);
@@ -54,17 +57,22 @@ export default function GamePage({ onGameOver }: GamePageProps)
 
             //mouth detection jump
             const faceResult = webcamRef.current?.getFaceResult();
-            const mouthIsOpen = isMouthOpen(faceResult);
-            setIsMouthCurrentlyOpen(mouthIsOpen);
+            const mouthOpenValue = faceResult?.faceBlendshapes?.[0]?.categories?.find(c => c.categoryName === "jawOpen")?.score || 0;
+            setIsMouthCurrentlyOpen(mouthOpenValue > 0.3);
 
-            if (mouthIsOpen && !wasMouthOpenRef.current && birdVelocity.current >= 0) {
-                birdVelocity.current = JUMP_STRENGTH;
+            if (mouthOpenValue > 0.3 && !wasMouthOpenRef.current && birdVelocity.current >= 0) {
+                const scaledJump = JUMP_STRENGTH * (1 + mouthOpenValue); 
+                birdVelocity.current = scaledJump;
+                birdVX.current = 2.5;
                 lastJumpTimeRef.current = Date.now();
             }
-            wasMouthOpenRef.current = mouthIsOpen;
+            wasMouthOpenRef.current = mouthOpenValue > 0.3;
             
             //physics
             const currentGravity = Math.min(BASE_GRAVITY + (scoreRef.current * 0.015), MAX_GRAVITY);
+            birdXRef.current += birdVX.current;
+            birdVX.current *= 0.98; // friction
+            setBirdX(birdXRef.current);
             birdVelocity.current += currentGravity;
             birdYRef.current += birdVelocity.current;
             setBirdY(birdYRef.current);
@@ -146,7 +154,7 @@ export default function GamePage({ onGameOver }: GamePageProps)
                 className="bird"
                 style={{
                     top: birdY,
-                    left: BIRD_X,
+                    left: birdX,
                     width: '40px',
                     height: '40px',
                     backgroundColor: "#70c5ce",
@@ -155,6 +163,7 @@ export default function GamePage({ onGameOver }: GamePageProps)
                     zIndex: 5
                 }}
             />
+
             
             {pipes.map(pipe => (
                 <React.Fragment key={pipe.id}>
