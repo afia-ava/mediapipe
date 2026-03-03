@@ -21,7 +21,7 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
-    // Add vite/client types for import.meta.env
+    // Add vite for import.meta.env
     "types": ["vite/client"]
   },
   "include": ["src"]
