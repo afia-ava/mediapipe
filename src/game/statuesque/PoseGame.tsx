@@ -176,11 +176,10 @@ export default function PoseGame({ poseImages }: { poseImages: string[] }) {
 
     setIsSubmittingScore(true);
     try {
-      const { error } = await supabase.from("scores").insert([
+      const { error } = await supabase.from("statuesque_scores").insert([
         {
           name: playerName.trim(),
-          accuracy: 0,
-          highest_level: level,
+          score: level - 1,
           created_at: new Date().toISOString(),
         },
       ]);
@@ -189,7 +188,6 @@ export default function PoseGame({ poseImages }: { poseImages: string[] }) {
         console.error("Error submitting score:", error.message);
         alert("Failed to submit score. Please try again.");
       } else {
-        alert("Score submitted! Thanks for playing!");
         // Reset the game
         setStarted(false);
         setPhase("idle");
@@ -300,10 +298,10 @@ export default function PoseGame({ poseImages }: { poseImages: string[] }) {
             <p>You failed to match all poses in Level {level}.</p>
             
             <div className="game-results-container">
-              <h3>Level {level} Results:</h3>
+              <h3>Score: {level - 1}</h3>
               {selectedPoses.map((pose, idx) => (
                 <div key={idx} className="result-item">
-                  <div>Pose {idx + 1}: {pose.filename}</div>
+                  <div>Pose {idx + 1}</div>
                   <div>Similarity: {((similarityResults[idx] ?? 0) * 100).toFixed(1)}%</div>
                   <div className={(similarityResults[idx] ?? 0) >= MATCH_THRESHOLD ? "result-passed" : "result-failed"}>
                     {(similarityResults[idx] ?? 0) >= MATCH_THRESHOLD ? "✓ Match" : "✗ Failed"}
