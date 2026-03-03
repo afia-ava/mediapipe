@@ -315,7 +315,6 @@ export default function PoseGame({ poseImages }: { poseImages: string[] }) {
         <div className="statuesque-overlay">
           <div className="statuesque-modal">
             <h2>Game Over!</h2>
-            <img src="/orpheus_gj.png" width="100%"></img>
             <p>You failed to match all poses in Level {level}.</p>
             
             <div className="game-results-container">
@@ -365,7 +364,14 @@ export default function PoseGame({ poseImages }: { poseImages: string[] }) {
                   className="restart-button"
                 >
                   Play Again
-                </button>
+                  </button>
+                  <button
+                    onClick={() => { window.location.href = '/'; }}
+                    className="restart-button"
+                    style={{ marginTop: '0.5rem' }}
+                  >
+                    Main Menu
+                  </button>
               </div>
             </div>
           </div>

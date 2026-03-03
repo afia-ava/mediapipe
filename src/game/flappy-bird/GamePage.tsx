@@ -7,8 +7,8 @@ const BASE_GRAVITY = 0.2;
 const MAX_GRAVITY = 0.25;
 const JUMP_STRENGTH = -4;
 const PIPE_SPEED = 3;
-const PIPE_SPAWN_RATE = 5500;
-const MIN_PIPE_DISTANCE = 300;
+const PIPE_SPAWN_RATE = 3000;
+const MIN_PIPE_DISTANCE = 500;
 const BIRD_X = 50;
 const PIPE_GAP = 160;
 const PIPE_WIDTH = 60;
@@ -91,16 +91,23 @@ export default function GamePage({ onGameOver }: GamePageProps)
                     .filter(p => p.x > -PIPE_WIDTH);
                 
                 //spawn pipes only after webcam is ready
-                if (webcamBecameReady && Date.now() - lastPipeSpawn.current > PIPE_SPAWN_RATE) {
-                    const randomHeight = Math.floor(Math.random() * 200) + 100;
-                    nextPipes.push({
-                        x: 800,
-                        topHeight: randomHeight,
-                        id: pipeIdCounter.current++,
-                        passed: false
-                    });
-                    lastPipeSpawn.current = Date.now();
-                }
+                                if (
+                                    webcamBecameReady &&
+                                    Date.now() - lastPipeSpawn.current > PIPE_SPAWN_RATE &&
+                                    (
+                                        nextPipes.length === 0 ||
+                                        nextPipes[nextPipes.length - 1].x < (800 - MIN_PIPE_DISTANCE)
+                                    )
+                                ) {
+                                    const randomHeight = Math.floor(Math.random() * 200) + 100;
+                                    nextPipes.push({
+                                        x: 800,
+                                        topHeight: randomHeight,
+                                        id: pipeIdCounter.current++,
+                                        passed: false
+                                    });
+                                    lastPipeSpawn.current = Date.now();
+                                }
 
                 for (const p of nextPipes) {
                     // If bird just passed the pipe's right edge
@@ -113,8 +120,10 @@ export default function GamePage({ onGameOver }: GamePageProps)
                     const birdRight = BIRD_X + BIRD_SIZE;
                     const birdBottom = birdYRef.current + BIRD_SIZE;
 
-                    if (BIRD_X < p.x + PIPE_WIDTH && birdRight > p.x) {
-                        if (birdYRef.current < p.topHeight || birdBottom > p.topHeight + PIPE_GAP) {
+                    // check if bird is overlapping pipe horizontally
+                    const GAP_BUFFER = 2;
+                    if (birdRight > p.x && BIRD_X < p.x + PIPE_WIDTH) {
+                        if (birdYRef.current < p.topHeight + GAP_BUFFER || birdBottom > p.topHeight + PIPE_GAP - GAP_BUFFER) {
                             onGameOver(scoreRef.current);
                             return prevPipes;
                         }
