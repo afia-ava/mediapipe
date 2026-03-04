@@ -3,16 +3,16 @@ import {WebcamCapture, type WebcamCaptureHandle } from "../../pose-detection/Web
 import { isMouthOpen } from "../../pose-utils";
 
 // game constants
-const BASE_GRAVITY = 0.2;
-const MAX_GRAVITY = 0.25;
-const JUMP_STRENGTH = -4;
-const PIPE_SPEED = 3;
-const PIPE_SPAWN_RATE = 3000;
+const BASE_GRAVITY = 0.22;
+const MAX_GRAVITY = 0.28;
+const JUMP_STRENGTH = -4.5;
+const PIPE_SPEED = 2;
+const PIPE_SPAWN_RATE = 5000;
 const MIN_PIPE_DISTANCE = 500;
 const BIRD_X = 50;
-const PIPE_GAP = 160;
+const PIPE_GAP = 200;
 const PIPE_WIDTH = 60;
-const JUMP_COOLDOWN = 300;
+const JUMP_COOLDOWN = 300; 
 
 interface GamePageProps {
     onGameOver: (score: number) => void;
@@ -23,6 +23,7 @@ export default function GamePage({ onGameOver }: GamePageProps)
     const [birdX, setBirdX] = useState(BIRD_X);
     const birdXRef = useRef(BIRD_X);
     const birdVX = useRef(0);
+    // Bird stays fixed at center
     const webcamRef = useRef<WebcamCaptureHandle>(null);
     const [birdY, setBirdY] = useState(300);
     const birdYRef = useRef(300);
@@ -41,12 +42,24 @@ export default function GamePage({ onGameOver }: GamePageProps)
         webcamRef.current?.start();
         let animationFrameId: number;
         let webcamBecameReady = false;
-        const update = () => {    
+        let lastTime = performance.now();
+        const update = (now: number) => {
+            const delta = Math.min((now - lastTime) / 16.67, 2); // normalize to ~60fps, cap delta
+            lastTime = now;
             // Check if webcam is ready
             if (!webcamBecameReady && webcamRef.current?.isRunning()) {
                 webcamBecameReady = true;
-                lastPipeSpawn.current = Date.now(); // Reset pipe spawn timer when webcam is ready
+                lastPipeSpawn.current = Date.now(); // Reset pipe spawn timer 
                 setWebcamReady(true);
+
+                setPipes([
+                    {
+                        x : 800,
+                        topHeight : Math.floor(Math.random() * 200) + 100,
+                        id : pipeIdCounter.current++,
+                        passed : false
+                    }
+                ])
             }
 
             // Don't run game logic until webcam is ready
@@ -70,16 +83,13 @@ export default function GamePage({ onGameOver }: GamePageProps)
             
             //physics
             const currentGravity = Math.min(BASE_GRAVITY + (scoreRef.current * 0.015), MAX_GRAVITY);
-            birdXRef.current += birdVX.current;
-            birdVX.current *= 0.98; // friction
-            setBirdX(birdXRef.current);
             birdVelocity.current += currentGravity;
             birdYRef.current += birdVelocity.current;
             setBirdY(birdYRef.current);
 
             //check floor/deiling hit
             const BIRD_SIZE = 40;
-            if (birdYRef.current < 0 || birdYRef.current + BIRD_SIZE > 600) {
+            if (birdYRef.current + BIRD_SIZE > 600) {
                 onGameOver(scoreRef.current);
                 return;
             }
@@ -91,44 +101,49 @@ export default function GamePage({ onGameOver }: GamePageProps)
                     .filter(p => p.x > -PIPE_WIDTH);
                 
                 //spawn pipes only after webcam is ready
-                                if (
-                                    webcamBecameReady &&
-                                    Date.now() - lastPipeSpawn.current > PIPE_SPAWN_RATE &&
-                                    (
-                                        nextPipes.length === 0 ||
-                                        nextPipes[nextPipes.length - 1].x < (800 - MIN_PIPE_DISTANCE)
-                                    )
-                                ) {
-                                    const randomHeight = Math.floor(Math.random() * 200) + 100;
-                                    nextPipes.push({
-                                        x: 800,
-                                        topHeight: randomHeight,
-                                        id: pipeIdCounter.current++,
-                                        passed: false
-                                    });
-                                    lastPipeSpawn.current = Date.now();
-                                }
-
-                for (const p of nextPipes) {
-                    // If bird just passed the pipe's right edge
-                    if (p.x + PIPE_WIDTH < BIRD_X && !p.passed) {
-                        p.passed = true; 
-                        scoreRef.current += 1;
-                        setScore(scoreRef.current);
-                    }
-
-                    const birdRight = BIRD_X + BIRD_SIZE;
-                    const birdBottom = birdYRef.current + BIRD_SIZE;
-
-                    // check if bird is overlapping pipe horizontally
-                    const GAP_BUFFER = 2;
-                    if (birdRight > p.x && BIRD_X < p.x + PIPE_WIDTH) {
-                        if (birdYRef.current < p.topHeight + GAP_BUFFER || birdBottom > p.topHeight + PIPE_GAP - GAP_BUFFER) {
-                            onGameOver(scoreRef.current);
-                            return prevPipes;
-                        }
-                    }
+                if (
+                    webcamBecameReady &&
+                    Date.now() - lastPipeSpawn.current > PIPE_SPAWN_RATE
+                ) {
+                    const randomHeight = Math.floor(Math.random() * 120) + 120;
+                    nextPipes.push({
+                        x: 800,
+                        topHeight: randomHeight,
+                        id: pipeIdCounter.current++,
+                        passed: false
+                    });
+                    lastPipeSpawn.current = Date.now();
                 }
+                //update score for pipes
+                let pipesPassed = 0;
+                nextPipes = nextPipes.map(p => {
+                    if (p.x + PIPE_WIDTH < 400 && !p.passed) {
+                        pipesPassed += 1;
+                        return { ...p, passed: true };
+                    }
+                    return p;
+                });
+                if (pipesPassed > 0) {
+                    scoreRef.current += pipesPassed;
+                    setScore(scoreRef.current);
+                }
+                
+                const birdLeft = 400;
+                const birdRight = birdLeft + BIRD_SIZE;
+                                const birdBottom = birdYRef.current + BIRD_SIZE;
+                                const GAP_BUFFER = 8;
+                                const activePipe = nextPipes.find(
+                    p => birdRight > p.x && birdLeft < p.x + PIPE_WIDTH
+                                );
+                                if (activePipe) {
+                                    if (
+                                        birdYRef.current < activePipe.topHeight + GAP_BUFFER ||
+                                        birdBottom > activePipe.topHeight + PIPE_GAP - GAP_BUFFER
+                                    ) {
+                                        console.log('Game Over: ', { birdY: birdYRef.current, birdBottom, pipe: activePipe });
+                                        onGameOver(scoreRef.current);
+                                    }
+                                }
                 return nextPipes;
             });
 
@@ -163,7 +178,7 @@ export default function GamePage({ onGameOver }: GamePageProps)
                 className="bird"
                 style={{
                     top: birdY,
-                    left: birdX,
+                    left: 400, // center of 800px game area
                     width: '40px',
                     height: '40px',
                     backgroundColor: "#70c5ce",
