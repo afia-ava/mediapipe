@@ -20,9 +20,9 @@ export default function Pong({ webcamRef, onGameOver } : PongProps) {
     const score = useRef(0);
     // Tiles setup
     const TILE_ROWS = 3;
-    const TILE_COLS = 8;
     const TILE_WIDTH = 80;
     const TILE_HEIGHT = 30;
+    const TILE_COLS = Math.ceil(CANVAS_WIDTH / TILE_WIDTH);
     const tiles = useRef(
         Array.from({ length: TILE_ROWS }, (_, row) =>
             Array.from({ length: TILE_COLS }, (_, col) => true)
@@ -108,7 +108,9 @@ export default function Pong({ webcamRef, onGameOver } : PongProps) {
                     for (let col = 0; col < TILE_COLS; col++) {
                         if (tiles.current[row][col]) {
                             ctx.fillStyle = "#f1c40f";
-                            ctx.fillRect(col * TILE_WIDTH, row * TILE_HEIGHT, TILE_WIDTH - 2, TILE_HEIGHT - 2);
+                            // Draw tiles from left to right, filling the full width
+                            const tx = col * TILE_WIDTH;
+                            ctx.fillRect(tx, row * TILE_HEIGHT, TILE_WIDTH - 2, TILE_HEIGHT - 2);
                         }
                     }
                 }
