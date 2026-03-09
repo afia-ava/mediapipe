@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
 import "./Pong.css";
-import { supabase } from "../../lib/supabase";
+
 
 interface PongProps {
     webcamRef: React.RefObject<any>;
@@ -24,8 +24,8 @@ export default function Pong({ webcamRef, onGameOver } : PongProps) {
     const TILE_HEIGHT = 30;
     const TILE_COLS = Math.ceil(CANVAS_WIDTH / TILE_WIDTH);
     const tiles = useRef(
-        Array.from({ length: TILE_ROWS }, (_, row) =>
-            Array.from({ length: TILE_COLS }, (_, col) => true)
+        Array.from({ length: TILE_ROWS }, () =>
+            Array.from({ length: TILE_COLS }, () => true)
         )
     );
 
@@ -107,22 +107,21 @@ export default function Pong({ webcamRef, onGameOver } : PongProps) {
                 for (let row = 0; row < TILE_ROWS; row++) {
                     for (let col = 0; col < TILE_COLS; col++) {
                         if (tiles.current[row][col]) {
-                            ctx.fillStyle = "#f1c40f";
-                            // Draw tiles from left to right, filling the full width
+                            ctx.fillStyle = "#b97aff"; // light purple
                             const tx = col * TILE_WIDTH;
                             ctx.fillRect(tx, row * TILE_HEIGHT, TILE_WIDTH - 2, TILE_HEIGHT - 2);
                         }
                     }
                 }
-                //Paddle
-                ctx.fillStyle = "#3498db";
+                // Paddle
+                ctx.fillStyle = "#f6c7f6"; // pink
                 ctx.fillRect(paddleX.current, CANVAS_HEIGHT - PADDLE_HEIGHT, PADDLE_WIDTH, PADDLE_HEIGHT);
-                //Ball
-                ctx.fillStyle = "#e74c3c";
+                // Ball
+                ctx.fillStyle = "#6d4a8c"; // deep purple
                 ctx.fillRect(ball.current.x, ball.current.y, BALL_SIZE, BALL_SIZE);
-                //Style
-                ctx.fillStyle = "#ffffff";
-                ctx.font = "20px Arial";
+                // Score text
+                ctx.fillStyle = "#f6c7f6";
+                ctx.font = "20px 'Lexend', Arial";
                 ctx.fillText(`Score: ${score.current}`, 10, 30);
             }
 

@@ -1,17 +1,22 @@
+
+
 .pong-page {
-    @apply flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-stone-medium to-stone-dark;
+    @apply flex flex-col items-center justify-center min-h-screen bg-purple-950;
 }
 
 .start-screen, .gameover-screen {
-    @apply flex flex-col items-center justify-center h-full;
+    @apply flex flex-col items-center justify-center h-full text-pink-200;
 }
 
 .start-button, .restart-button {
-    @apply bg-blue-500 text-white font-bold py-2 px-6 rounded-lg shadow-lg hover:bg-blue-600 transition;
+    @apply bg-gradient-to-r from-purple-400 to-pink-200 text-purple-900 font-bold py-2 px-6 rounded-xl shadow-lg transition;
+}
+.start-button:hover, .restart-button:hover {
+    @apply bg-gradient-to-r from-pink-200 to-purple-400;
 }
 
 .instructions {
-    @apply text-lg text-white mb-6;
+    @apply text-lg text-purple-200 mb-6;
 }
 
 .game-layout {
@@ -19,6 +24,6 @@
 }
 
 .webcam-panel {
-    @apply flex flex-col items-center bg-stone-light p-4 rounded-lg shadow-md;
+    @apply flex flex-col items-center bg-purple-800 p-4 rounded-xl shadow-md;
 }
 
