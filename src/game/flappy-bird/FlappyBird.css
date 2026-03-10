@@ -8,8 +8,7 @@
 }
 
 .webcam-panel {
-    @apply flex flex-col items-center gap-3 p-4 bg-stone-800 
-    border-4 border-bronze-medium rounded-sm;
+    @apply flex flex-col items-center gap-3 p-4 bg-stone-800/60 border-4 border-bronze-medium rounded-sm backdrop-blur-md;
 }
 
 .webcam-panel h3 {
@@ -27,8 +26,7 @@
 }
 
 .flappy-container {
-    @apply relative w-[800px] h-[600px] overflow-hidden bg-stone-800
-    border-4 border-bronze-medium shadow-2xl;
+    @apply relative w-[800px] h-[600px] overflow-hidden bg-stone-800 border-4 border-bronze-medium shadow-2xl;
 }
 
 .bird {
@@ -46,8 +44,8 @@
 }
 
 .flappy-menu {
-    @apply flex flex-col items-center justify-center gap-6 p-10
-    bg-papyrus-light border-4 border-bronze-medium text-text-dark;
+    @apply flex flex-col items-center justify-center gap-6 p-10 bg-papyrus-light/70 border-4 border-bronze-medium text-text-dark backdrop-blur-md;
+    border-radius: 1rem;
 }
 
 .flappy-menu h1 {

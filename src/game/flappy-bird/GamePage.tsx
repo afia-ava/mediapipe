@@ -155,11 +155,11 @@ export default function GamePage({ onGameOver }: GamePageProps)
     }, []);
 
     return (
-        <div className="flappy-layout"> 
+        <div className="flex gap-6 items-center">
             {/* webcam panel */}
-            <div className="webcam-panel">
-                <h3>Mouth Tracker</h3>
-                <div className= "webcam-box">
+            <div className="backdrop-blur-md bg-blue-100/60 border-4 border-blue-300 rounded-xl flex flex-col items-center gap-3 p-4 shadow-lg">
+                <h3 className="text-blue-700 font-bold uppercase tracking-wider text-sm">Mouth Tracker</h3>
+                <div className="w-[480px] h-[360px] border-2 border-blue-400 shadow-lg overflow-hidden bg-blue-50 rounded-xl">
                     <WebcamCapture ref={webcamRef} width="480px" height="360px"/>
                 </div>
                 <div className="mouth-indicator">
@@ -170,39 +170,38 @@ export default function GamePage({ onGameOver }: GamePageProps)
                 </div>
             </div>
 
-        {/* Game Area */}
-        <div className="flappy-container">
-            <div className="flappy-score">{score}</div>
+            {/* Game Area */}
+            <div className="flappy-container">
+                <div className="absolute top-8 left-1/2 -translate-x-1/2 z-20 text-5xl font-bold text-blue-700 drop-shadow-md italic">{score}</div>
 
-            <div
-                className="bird"
-                style={{
-                    top: birdY,
-                    left: 400, // center of 800px game area
-                    width: '40px',
-                    height: '40px',
-                    backgroundColor: "#70c5ce",
-                    borderRadius: '50%',
-                    border: '2px solid orange',
-                    zIndex: 5
-                }}
-            />
+                <div
+                    className="bird"
+                    style={{
+                        top: birdY,
+                        left: 400, // center of 800px game area
+                        width: '40px',
+                        height: '40px',
+                        backgroundColor: "#70c5ce",
+                        borderRadius: '50%',
+                        border: '2px solid orange',
+                        zIndex: 5
+                    }}
+                />
 
-            
-            {pipes.map(pipe => (
-                <React.Fragment key={pipe.id}>
-                    <div
-                        className="pipe" 
-                        style={{ position: 'absolute', left: pipe.x, top: 0, width: PIPE_WIDTH, height: pipe.topHeight, backgroundColor: 'green' }} 
-                    />
-                    <div
-                        className="pipe" 
-                        style={{ position: 'absolute', left: pipe.x, top: pipe.topHeight + PIPE_GAP, width: PIPE_WIDTH, height: 600, backgroundColor: 'green' }} 
-                    />
-                </React.Fragment>
-            ))}
+                {pipes.map(pipe => (
+                    <React.Fragment key={pipe.id}>
+                        <div
+                            className="pipe"
+                            style={{ position: 'absolute', left: pipe.x, top: 0, width: PIPE_WIDTH, height: pipe.topHeight, backgroundColor: 'green' }}
+                        />
+                        <div
+                            className="pipe"
+                            style={{ position: 'absolute', left: pipe.x, top: pipe.topHeight + PIPE_GAP, width: PIPE_WIDTH, height: 600, backgroundColor: 'green' }}
+                        />
+                    </React.Fragment>
+                ))}
+            </div>
         </div>
-    </div>
-);
+    );
 }
 

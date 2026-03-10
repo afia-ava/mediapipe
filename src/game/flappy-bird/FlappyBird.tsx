@@ -43,7 +43,7 @@ export default function FlappyBird() {
     };
      
     return (
-        <div className="flappy-root">
+        <div className="min-h-screen w-full h-full flex items-center justify-center p-5 bg-gradient-to-br from-sky-200 via-sky-300 to-blue-200 text-blue-900">
             {showScoreNotification && (
                 <div className="fixed top-8 right-8 z-50 bg-stone-900 text-white px-8 py-5 rounded-xl shadow-lg flex items-center gap-4">
                     <span>Score saved!</span>
@@ -57,7 +57,7 @@ export default function FlappyBird() {
                 </div>
             )}
             {gameState === "menu" && (
-                <div className="flappy-menu">
+                <div className="backdrop-blur-lg bg-white/70 border-4 border-blue-300 rounded-xl shadow-2xl flex flex-col items-center justify-center gap-6 p-10">
                     <h1>Flappy Bird</h1>
                     <button className="btn-statue" onClick={() => setGameState("playing")}>Start Game</button>
                 </div>
@@ -65,7 +65,7 @@ export default function FlappyBird() {
             {gameState === "playing" && <GamePage onGameOver={handleGameOver} />}
             
             {gameState === "gameover" && (
-                <div className="flappy-menu">
+                <div className="backdrop-blur-lg bg-white/70 border-4 border-blue-300 rounded-xl shadow-2xl flex flex-col items-center justify-center gap-6 p-10">
                     <h1>Game Over</h1>
                     <p>Your Score: {score}</p>
 
