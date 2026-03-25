@@ -43,7 +43,7 @@ export default function FlappyBird() {
     };
      
     return (
-        <div className="min-h-screen w-full h-full flex items-center justify-center p-5 bg-gradient-to-br from-sky-200 via-sky-300 to-blue-200 text-blue-900">
+        <div className="flappy-page">
             {showScoreNotification && (
                 <div className="fixed top-8 right-8 z-50 bg-stone-900 text-white px-8 py-5 rounded-xl shadow-lg flex items-center gap-4">
                     <span>Score saved!</span>
@@ -57,42 +57,50 @@ export default function FlappyBird() {
                 </div>
             )}
             {gameState === "menu" && (
-                <div className="backdrop-blur-lg bg-white/70 border-4 border-blue-300 rounded-xl shadow-2xl flex flex-col items-center justify-center gap-6 p-10">
+                <div className="flappy-card" role="region" aria-label="Flappy Bird start card">
                     <h1>Flappy Bird</h1>
-                    <button className="btn-statue" onClick={() => setGameState("playing")}>Start Game</button>
+                    <p className="flappy-instructions">
+                        Open your <strong>mouth</strong> to make the bird <strong>jump</strong><br/>
+                        Keep your mouth <strong>closed</strong> to <strong>fall</strong>
+                    </p>
+                    <div className="flappy-actions">
+                        <button className="btn-statue" onClick={() => setGameState("playing")}>Start Game</button>
+                        <Link className="btn-statue" to="/">Back to Menu</Link>
+                    </div>
                 </div>
             )}
             {gameState === "playing" && <GamePage onGameOver={handleGameOver} />}
             
             {gameState === "gameover" && (
-                <div className="backdrop-blur-lg bg-white/70 border-4 border-blue-300 rounded-xl shadow-2xl flex flex-col items-center justify-center gap-6 p-10">
+                <div className="flappy-card" role="region" aria-label="Flappy Bird game over card">
                     <h1>Game Over</h1>
-                    <p>Your Score: {score}</p>
+                    <p className="flappy-score-text">Your Score: {score}</p>
 
                     <input
                         type="text"
                         placeholder="Enter your name"
                         value={playerName}
                         onChange={(e) => setPlayerName(e.target.value)}
-                        className="p-2 mb-3 border-2 border-bronze-dark bg-papyrus-light text-text-dark"
+                        className="flappy-name-input"
                     />
 
-                    <button
-                        className="btn-statue"
-                        onClick={handleSubmitScore}
-                        disabled={!playerName.trim()}
-                    >
-                        Submit Score
-                    </button>
+                    <div className="flappy-actions">
+                        <button
+                            className="btn-statue"
+                            onClick={handleSubmitScore}
+                            disabled={!playerName.trim()}
+                        >
+                            Submit Score
+                        </button>
 
-                    <button
-                        className="btn-statue"
-                        onClick={() => setGameState("playing")}
-                        style={{ marginBottom: '0.5rem' }}
-                    >
-                        Play Again
-                    </button>
-                    <Link className="btn-statue" to="/">Back to Menu</Link>
+                        <button
+                            className="btn-statue"
+                            onClick={() => setGameState("playing")}
+                        >
+                            Play Again
+                        </button>
+                        <Link className="btn-statue" to="/">Back to Menu</Link>
+                    </div>
                 </div>
             )}
         </div>

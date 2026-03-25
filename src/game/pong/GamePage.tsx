@@ -48,29 +48,21 @@ export default function GamePage() {
         }
     }, [gameState]);
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            if (webcamRef.current?.isRunning()) {
-                setWebcamReady(true);
-                clearInterval(interval);
-            }
-        }, 100);
-        return () => clearInterval(interval);
-    }, []);
-
     return (
         <div className="pong-page">
             {/*Start Screen */}
             {gameState === "start" && (
                 <div className="start-screen">
-                    <h1>Pose Pong</h1>
-                    <p className="instructions">
-                        Move <strong>closer</strong> to camera → paddle moves <strong>right</strong><br/>
-                        Move <strong>away</strong> from camera → paddle moves <strong>left</strong><br/>
-                    </p>
-                    <button className="start-button" onClick={handleStart}>
-                        Start Game
-                    </button>
+                    <div className="pong-card" role="region" aria-label="Pose Pong start card">
+                        <h1>Pose Pong</h1>
+                        <p className="instructions">
+                            Move <strong>closer</strong> to camera → paddle moves <strong>right</strong><br/>
+                            Move <strong>away</strong> from camera → paddle moves <strong>left</strong>
+                        </p>
+                        <button className="start-button" onClick={handleStart}>
+                            Start Game
+                        </button>
+                    </div>
                 </div>
             )}
 
@@ -88,38 +80,42 @@ export default function GamePage() {
             {/*Game Over Screen */}
             {gameState === "gameover" && (
                 <div className="gameover-screen">
-                    <h1>Game Over</h1>
-                    <p className="final-score">Score: {finalScore}</p>
-                    {!submitted && (
-                        <>
-                            <form
-                                className="score-form"
-                                onSubmit={e => { e.preventDefault(); handleSubmitScore(); }}
-                            >
-                                <label htmlFor="name">Enter your name to save your score:</label>
-                                <input
-                                    id="name"
-                                    type="text"
-                                    value={name}
-                                    onChange={e => setName(e.target.value)}
-                                    minLength={2}
-                                    maxLength={20}
-                                    disabled={submitting}
-                                />
-                                <button type="submit" className="submit-score" disabled={submitting || !name}>
-                                    {submitting ? "Submitting..." : "Submit Score"}
-                                </button>
-                            </form>
-                            <p className="meta">If you don't enter a name, your score won't be saved.</p>
-                        </>
-                    )}
-                    {submitted && (
-                        <p className="score-success">Score submitted! Check the leaderboard.</p>
-                    )}
-                    <button className="restart-button" onClick={handleRestart}>
-                        Play Again
-                    </button>
-                    <Link className="menu-button" to="/">Back to Menu</Link>
+                    <div className="pong-card pong-card-gameover" role="region" aria-label="Pose Pong game over card">
+                        <h1>Game Over</h1>
+                        <p className="final-score">Score: {finalScore}</p>
+                        {!submitted && (
+                            <>
+                                <form
+                                    className="score-form"
+                                    onSubmit={e => { e.preventDefault(); handleSubmitScore(); }}
+                                >
+                                    <label htmlFor="name">Enter your name to save your score:</label>
+                                    <input
+                                        id="name"
+                                        type="text"
+                                        value={name}
+                                        onChange={e => setName(e.target.value)}
+                                        minLength={2}
+                                        maxLength={20}
+                                        disabled={submitting}
+                                    />
+                                    <button type="submit" className="submit-score" disabled={submitting || !name}>
+                                        {submitting ? "Submitting..." : "Submit Score"}
+                                    </button>
+                                </form>
+                                <p className="meta">If you don't enter a name, your score won't be saved.</p>
+                            </>
+                        )}
+                        {submitted && (
+                            <p className="score-success">Score submitted! Check the leaderboard.</p>
+                        )}
+                        <div className="action-row">
+                            <button className="restart-button" onClick={handleRestart}>
+                                Play Again
+                            </button>
+                            <Link className="menu-button" to="/">Back to Menu</Link>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>

@@ -1,3 +1,52 @@
+.flappy-page {
+    @apply min-h-screen w-full h-full flex items-center justify-center p-5;
+    background: radial-gradient(circle at 25% 20%, #d9f1ff 0%, #b8e5ff 40%, #9fd8ff 100%);
+}
+
+.flappy-card {
+    @apply w-full max-w-[760px] p-8 md:p-10 text-center flex flex-col items-center gap-5;
+    border: 3px solid #5aa8d8;
+    background: linear-gradient(145deg, #f4fbff 0%, #e2f5ff 52%, #cdeeff 100%);
+    box-shadow: 0 16px 36px rgba(20, 87, 130, 0.28), 0 0 0 2px #8fceef;
+    color: #12557f;
+}
+
+.flappy-card h1 {
+    @apply text-4xl md:text-5xl font-bold uppercase tracking-[2px];
+    color: #0f5f91;
+    text-shadow: none;
+}
+
+.flappy-instructions {
+    @apply text-lg md:text-xl leading-relaxed font-semibold;
+    color: #1d6f9f;
+    text-shadow: none;
+}
+
+.flappy-instructions strong {
+    text-shadow: none;
+}
+
+.flappy-actions {
+    @apply w-full flex flex-col sm:flex-row items-center justify-center gap-3;
+}
+
+.flappy-score-text {
+    @apply text-xl font-semibold;
+    color: #1c6a99;
+}
+
+.flappy-name-input {
+    @apply w-full px-4 py-2 border-2 outline-none;
+    border-color: #69b9e4;
+    background: #f7fcff;
+    color: #12557f;
+}
+
+.flappy-name-input:focus {
+    border-color: #3ca5de;
+}
+
 .flappy-root {
     @apply w-full h-full min-h-screen flex items-center justify-center p-5
     bg-stone-900 text-papyrus-light;
@@ -26,11 +75,20 @@
 }
 
 .flappy-container {
-    @apply relative w-[800px] h-[600px] overflow-hidden bg-stone-800 border-4 border-bronze-medium shadow-2xl;
-}
+    @apply relative w-[800px] h-[600px] overflow-hidden border-4 border-bronze-medium shadow-2xl;
+    background-color: #8fd3ff;
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04)), url("./assets/sky.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+} 
 
 .bird {
     @apply absolute rounded-full bg-gold border-2 border-bronze-dark shadow-lg;
+}
+
+.bird-sprite {
+    @apply absolute object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.45)];
 }
 
 .pipe {
@@ -57,9 +115,11 @@
 }
 
 .btn-statue {
-    @apply px-8 py-3 bg-gold text-text-dark font-bold uppercase
-    border-2 border-bronze-dark transition-transform active:scale-95
+    @apply px-8 py-3 font-bold uppercase border-2 transition-transform active:scale-95
     cursor-pointer hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed;
+    background: linear-gradient(145deg, #9ddcff 0%, #79c9f5 100%);
+    color: #114f75;
+    border-color: #4ea8d8;
 }
 
 .status-dot {

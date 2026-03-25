@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import {WebcamCapture, type WebcamCaptureHandle } from "../../pose-detection/WebcamCapture";
 import { isMouthOpen } from "../../pose-utils";
+import flappyBirdSprite from "./assets/flappy bird.png";
 
 // game constants
 const BASE_GRAVITY = 0.22;
@@ -174,16 +175,15 @@ export default function GamePage({ onGameOver }: GamePageProps)
             <div className="flappy-container">
                 <div className="absolute top-8 left-1/2 -translate-x-1/2 z-20 text-5xl font-bold text-blue-700 drop-shadow-md italic">{score}</div>
 
-                <div
-                    className="bird"
+                <img
+                    className="bird-sprite"
+                    src={flappyBirdSprite}
+                    alt="Flappy Bird"
                     style={{
                         top: birdY,
                         left: 400, // center of 800px game area
                         width: '40px',
                         height: '40px',
-                        backgroundColor: "#70c5ce",
-                        borderRadius: '50%',
-                        border: '2px solid orange',
                         zIndex: 5
                     }}
                 />

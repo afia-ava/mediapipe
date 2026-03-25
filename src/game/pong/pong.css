@@ -1,29 +1,118 @@
-
-
 .pong-page {
-    @apply flex flex-col items-center justify-center min-h-screen bg-purple-950;
+    @apply min-h-screen w-full flex flex-col items-center justify-center p-6 text-papyrus-light;
+    background: radial-gradient(circle at 20% 20%, #5f3ca8 0%, #311a64 45%, #160b35 100%);
 }
 
-.start-screen, .gameover-screen {
-    @apply flex flex-col items-center justify-center h-full text-pink-200;
+.pong-page .start-screen,
+.pong-page .gameover-screen {
+    @apply w-full flex items-center justify-center;
 }
 
-.start-button, .restart-button {
-    @apply bg-gradient-to-r from-purple-400 to-pink-200 text-purple-900 font-bold py-2 px-6 rounded-xl shadow-lg transition;
-}
-.start-button:hover, .restart-button:hover {
-    @apply bg-gradient-to-r from-pink-200 to-purple-400;
-}
-
-.instructions {
-    @apply text-lg text-purple-200 mb-6;
+.pong-page .pong-card {
+    @apply w-full max-w-[760px] p-8 md:p-10 text-center relative overflow-hidden;
+    border: 3px solid #2a125e;
+    color: #2b165e;
+    background: linear-gradient(145deg, #f5ebff 0%, #e8d7ff 52%, #d8bbff 100%);
+    box-shadow: 0 14px 34px rgba(22, 10, 53, 0.42), 0 0 0 2px #c59bff;
 }
 
-.game-layout {
-    @apply flex flex-row items-start gap-8 mt-8;
+.pong-page .pong-card::before {
+    content: none;
 }
 
-.webcam-panel {
-    @apply flex flex-col items-center bg-purple-800 p-4 rounded-xl shadow-md;
+.pong-page .pong-card h1 {
+    @apply text-4xl md:text-5xl font-bold uppercase tracking-[2px] mb-5;
+    color: #3c1f82;
+    text-shadow: none;
+}
+
+.pong-page .instructions {
+    @apply text-lg md:text-xl leading-relaxed mb-8 font-semibold;
+    color: #371f73;
+    text-shadow: none;
+}
+
+.pong-page .instructions strong {
+    text-shadow: none;
+}
+
+.pong-page .start-button,
+.pong-page .restart-button,
+.pong-page .submit-score,
+.pong-page .menu-button {
+    @apply inline-flex items-center justify-center px-7 py-3 font-bold uppercase tracking-[1px] no-underline
+    border-2 transition-all duration-300;
+    background: linear-gradient(145deg, #cfabff 0%, #a577ff 100%);
+    color: #2a125e;
+    border-color: #5f37b6;
+    box-shadow: none;
+}
+
+.pong-page .start-button:hover,
+.pong-page .restart-button:hover,
+.pong-page .submit-score:hover,
+.pong-page .menu-button:hover {
+    @apply brightness-105;
+    box-shadow: none;
+}
+
+.pong-page .game-layout {
+    @apply w-full max-w-[1400px] flex flex-col xl:flex-row items-center xl:items-start justify-center gap-6;
+}
+
+.pong-page .webcam-panel {
+    @apply w-full max-w-[520px] flex flex-col items-center p-4 border-[4px]
+    shadow-[inset_0_0_22px_rgba(0,0,0,0.55),0_10px_24px_rgba(0,0,0,0.55)];
+    border-color: #7e52db;
+    background: linear-gradient(145deg, #201044 0%, #321769 100%);
+    box-shadow: inset 0 0 22px rgba(0, 0, 0, 0.55), 0 10px 24px rgba(0, 0, 0, 0.55), 0 0 0 2px #b390ff;
+}
+
+.pong-page .webcam-panel h3 {
+    @apply text-lg font-semibold mb-3 uppercase tracking-[1px];
+    color: #efe8ff;
+}
+
+.pong-page .pong-card-gameover {
+    @apply flex flex-col items-center;
+}
+
+.pong-page .final-score {
+    @apply text-2xl font-bold mb-4;
+    color: #3b217e;
+}
+
+.pong-page .score-form {
+    @apply w-full flex flex-col gap-3 text-left my-4;
+}
+
+.pong-page .score-form label {
+    @apply font-semibold;
+    color: #321a6a;
+}
+
+.pong-page .score-form input {
+    @apply w-full px-4 py-2 border-2 outline-none;
+    background: #f0e8ff;
+    color: #2c155f;
+    border-color: #7e52db;
+}
+
+.pong-page .score-form input:focus {
+    border-color: #b390ff;
+}
+
+.pong-page .action-row {
+    @apply mt-4 w-full flex flex-col sm:flex-row items-center justify-center gap-3;
+}
+
+.pong-page .meta {
+    @apply text-sm mb-3;
+    color: #4a2e88;
+}
+
+.pong-page .score-success {
+    @apply text-base font-semibold mb-4;
+    color: #b6ffcf;
 }
 

@@ -58,20 +58,81 @@ async function savePoseToCache(data: StoredPoseData): Promise<void> {
   });
 }
 
+function normalizePoseId(value: string): string {
+  const withoutQuery = value.split("?")[0];
+  const filename = withoutQuery.split("/").pop() || withoutQuery;
+  const decoded = decodeURIComponent(filename);
+  const baseName = decoded.replace(/\.[^.]+$/, "");
+  return baseName.toLowerCase().replace(/\s+/g, "_");
+}
+
+function isImagePath(value: string): boolean {
+  return /\.(jpg|jpeg|png|webp)(\?.*)?$/i.test(value);
+}
+
 // Retrieve pose landmarks from IndexedDB cache. 
 export async function getPoseLandmarks(poseId: string): Promise<Landmark[] | null> {
   const db = await initializeDB();
-  return new Promise((resolve, reject) => {
-    const transaction = db.transaction(STORE_NAME, "readonly");
-    const store = transaction.objectStore(STORE_NAME);
-    const request = store.get(poseId);
 
-    request.onerror = () => reject(request.error);
-    request.onsuccess = () => {
-      const result = request.result as StoredPoseData | undefined;
-      resolve(result?.landmarks ?? null);
-    };
+  const getById = (id: string) =>
+    new Promise<StoredPoseData | undefined>((resolve, reject) => {
+      const transaction = db.transaction(STORE_NAME, "readonly");
+      const store = transaction.objectStore(STORE_NAME);
+      const request = store.get(id);
+      request.onerror = () => reject(request.error);
+      request.onsuccess = () => resolve(request.result as StoredPoseData | undefined);
+    });
+
+  const getAll = () =>
+    new Promise<StoredPoseData[]>((resolve, reject) => {
+      const transaction = db.transaction(STORE_NAME, "readonly");
+      const store = transaction.objectStore(STORE_NAME);
+      const request = store.getAll();
+      request.onerror = () => reject(request.error);
+      request.onsuccess = () => resolve(request.result as StoredPoseData[]);
+    });
+
+  // 1) Direct lookup for callers already using cache IDs.
+  const direct = await getById(poseId);
+  if (direct?.landmarks?.length) return direct.landmarks;
+
+  // 2) Derive ID from image URL/path and retry.
+  const derivedId = normalizePoseId(poseId);
+  if (derivedId !== poseId) {
+    const derived = await getById(derivedId);
+    if (derived?.landmarks?.length) return derived.landmarks;
+  }
+
+  // 3) Fuzzy match by stored filename or image URL.
+  const allCached = await getAll();
+  const byMetadata = allCached.find((pose) => {
+    const filenameId = normalizePoseId(pose.filename || "");
+    return pose.imageUrl === poseId || filenameId === derivedId;
   });
+  if (byMetadata?.landmarks?.length) return byMetadata.landmarks;
+
+  // 4) Final fallback: extract from image URL on demand, cache it, and return.
+  if (isImagePath(poseId)) {
+    try {
+      const landmarks = await extractLandmarksFromImage(poseId);
+      if (landmarks.length > 0) {
+        const cacheId = derivedId || poseId.toLowerCase().replace(/\s+/g, "_");
+        await savePoseToCache({
+          id: cacheId,
+          filename: cacheId,
+          imageUrl: poseId,
+          landmarks,
+          timestamp: Date.now()
+        });
+      }
+      return landmarks;
+    } catch (error) {
+      console.error("Failed to extract fallback landmarks for", poseId, error);
+      return null;
+    }
+  }
+
+  return null;
 }
 
 // Get all cached poses. 

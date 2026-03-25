@@ -223,6 +223,16 @@
   bg-gradient-to-t from-black/95 to-black/60;
 }
 
+.pose-step-overlay {
+  @apply absolute inset-0 flex items-center justify-center z-[2] pointer-events-none
+  bg-black/45;
+}
+
+.pose-step-overlay span {
+  @apply text-[10rem] max-[1024px]:text-[6rem] leading-none font-black text-papyrus-light
+  [text-shadow:0_6px_24px_rgba(0,0,0,0.95),0_0_1px_rgba(0,0,0,1)];
+}
+
 .webcam-phase-info.pulsing {
   @apply animate-pose-pulse ease-out;
 }

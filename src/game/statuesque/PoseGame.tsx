@@ -1,13 +1,34 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { WebcamCapture, type WebcamCaptureHandle } from "../../pose-detection/WebcamCapture";
 import { supabase } from "../../lib/supabase";
-import { getPoseLandmarks } from "../../pose-utils/extractPoseData";
-import { comparePoses } from "../../pose-utils/comparePoses";
+import { extractAllPosesFromAssets, getPoseLandmarks } from "../../pose-utils/extractPoseData";
+import { comparePoses, type Landmark } from "../../pose-utils/comparePoses";
 
-const MATCH_THRESHOLD = 0.45;
+const MATCH_THRESHOLD = 0.5;
 const COUNTDOWN_LEN = 4;
 const BETWEEN_LEVEL = 3;
 const WEBCAM_TIMER = 3; 
+
+const LEFT_RIGHT_LANDMARK_PAIRS: Array<[number, number]> = [
+  [1, 4], [2, 5], [3, 6], [7, 8], [9, 10],
+  [11, 12], [13, 14], [15, 16], [17, 18], [19, 20], [21, 22],
+  [23, 24], [25, 26], [27, 28], [29, 30], [31, 32]
+];
+
+function mirrorLandmarksForFrontCamera(landmarks: Landmark[]): Landmark[] {
+  const mirrored = landmarks.map((lm) => ({ ...lm, x: 1 - lm.x }));
+
+  for (const [leftIdx, rightIdx] of LEFT_RIGHT_LANDMARK_PAIRS) {
+    const left = mirrored[leftIdx];
+    const right = mirrored[rightIdx];
+    if (!left || !right) continue;
+    mirrored[leftIdx] = right;
+    mirrored[rightIdx] = left;
+  }
+
+  return mirrored;
+}
 
 export default function PoseGame({ poseImages }: { poseImages: string[] }) {
   const [started, setStarted] = useState(false);
@@ -15,7 +36,6 @@ export default function PoseGame({ poseImages }: { poseImages: string[] }) {
   const [phase, setPhase] = useState<"idle" | "show" | "webcam" | "ending" | "gameover" | "level-complete">("idle");
   const [poseIndex, setPoseIndex] = useState(0);
   const [countdown, setCountdown] = useState(COUNTDOWN_LEN);
-  const [isPulsing, setIsPulsing] = useState(false);
   const [isWebcamReady, setIsWebcamReady] = useState(false);
   const [playerName, setPlayerName] = useState("");
   const [showPhaseDone, setShowPhaseDone] = useState(false);
@@ -37,10 +57,22 @@ export default function PoseGame({ poseImages }: { poseImages: string[] }) {
   const [currentLevelPoses, setCurrentLevelPoses] = useState<string[]>([]);
 
   function startLevel(newLevel: number) {
-    const shuffled = [...poseImages].sort(() => 0.5 - Math.random());
-    const selected = shuffled.slice(0, newLevel);
-    console.log("Selected poses for level", newLevel, ":", selected);
-    setCurrentLevelPoses(selected);
+    setCurrentLevelPoses((previousPoses) => {
+      if (newLevel <= 1 || previousPoses.length === 0) {
+        const firstPose = poseImages[Math.floor(Math.random() * poseImages.length)];
+        return firstPose ? [firstPose] : [];
+      }
+
+      const remainingPoses = poseImages.filter((pose) => !previousPoses.includes(pose));
+      const sourcePool = remainingPoses.length > 0 ? remainingPoses : poseImages;
+      const nextPose = sourcePool[Math.floor(Math.random() * sourcePool.length)];
+
+      if (!nextPose) {
+        return previousPoses;
+      }
+
+      return [...previousPoses, nextPose];
+    });
     setPoseIndex(0);
     setLevel(newLevel);
     setPhase("show");
@@ -72,6 +104,13 @@ export default function PoseGame({ poseImages }: { poseImages: string[] }) {
       }
     };
     initWebcam();
+  }, []);
+
+  // Warm the pose landmark cache so first comparisons do not fail with 0%.
+  useEffect(() => {
+    extractAllPosesFromAssets().catch((error) => {
+      console.warn("Pose cache warm-up failed; on-demand extraction will be used.", error);
+    });
   }, []);
 
   // countdown timer for show phase
@@ -107,15 +146,6 @@ export default function PoseGame({ poseImages }: { poseImages: string[] }) {
     return () => clearInterval(interval);
   }, [phase]);
 
-  // pose index change
-  useEffect(() => {
-    if (phase === "webcam") {
-      setIsPulsing(true);
-      const timer = setTimeout(() => setIsPulsing(false), 600);
-      return () => clearTimeout(timer);
-    }
-  }, [poseIndex, phase]);
-
   // countdown and pose comparison
   useEffect(() => {
     if (phase !== "webcam" || !started || webcamPhaseDone) return;
@@ -135,9 +165,22 @@ export default function PoseGame({ poseImages }: { poseImages: string[] }) {
             const userLandmarks = webcamRef.current?.getCurrentLandmarks?.();
             const referenceLandmarks = await getPoseLandmarks(currentLevelPoses[poseIndex]);
             if (userLandmarks && referenceLandmarks) {
-              const result = comparePoses(referenceLandmarks, userLandmarks, { similarityThreshold: MATCH_THRESHOLD });
-              matched = result.isMatching;
-              similarity = result.similarity;
+              const comparisonOptions = {
+                similarityThreshold: MATCH_THRESHOLD,
+                useAngles: true,
+                angleWeight: 0.45,
+                perLimbNormalization: true,
+              };
+
+              const normalResult = comparePoses(referenceLandmarks, userLandmarks, comparisonOptions);
+              const mirroredResult = comparePoses(
+                referenceLandmarks,
+                mirrorLandmarksForFrontCamera(userLandmarks),
+                comparisonOptions
+              );
+              const bestResult = normalResult.similarity >= mirroredResult.similarity ? normalResult : mirroredResult;
+              matched = bestResult.isMatching;
+              similarity = bestResult.similarity;
             }
           } catch (e) {
             matched = false;
@@ -158,16 +201,12 @@ export default function PoseGame({ poseImages }: { poseImages: string[] }) {
             if (matched) { 
               if (poseIndex + 1 < currentLevelPoses.length) {
                 setPoseIndex(poseIndex + 1);
-                setPhase("show");
-                setShowPhaseDone(false);
                 setWebcamPhaseDone(false);
+                setWebcamCountdown(WEBCAM_TIMER);
                 setPoseMatched(null);
               }
               else {
                 setPhase("level-complete");
-                setTimeout(() => {
-                  startLevel(level + 1);
-                }, BETWEEN_LEVEL * 1000);
               }
             } else {
               setPhase("gameover");
@@ -177,7 +216,7 @@ export default function PoseGame({ poseImages }: { poseImages: string[] }) {
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, [phase, started, webcamPhaseDone, poseImages, poseIndex]);
+  }, [phase, started, webcamPhaseDone, poseIndex, currentLevelPoses]);
 
   // add score to supabase
   const submitScore = async () => {
@@ -242,17 +281,17 @@ export default function PoseGame({ poseImages }: { poseImages: string[] }) {
         {/* pose info panel */}
         <div className="statuesque-right-panel">
           {/* display reference pose image */}
-          {started && phase === "show" && currentLevelPoses[poseIndex] && (
+          {started && phase === "show" && currentLevelPoses[currentLevelPoses.length - 1] && (
             <div className="pose-display">
               <img
-                src={currentLevelPoses[poseIndex]}
-                alt={`Pose ${poseIndex + 1}`}
+                src={currentLevelPoses[currentLevelPoses.length - 1]}
+                alt={`Pose ${level}`}
                 className="pose-display-canvas"
                 style={{ width: "100%", height: "100%", objectFit: "contain" }}
               />
               <div className="pose-info">
                 <div className="level-indicator">Level {level}</div>
-                <div className="pose-counter">Pose {poseIndex + 1} / {level}</div>
+                <div className="pose-counter">Memorize new pose ({level})</div>
                 <div className="countdown-display">
                   Next in <span className="countdown-number">{countdown}s</span>
                 </div>
@@ -262,20 +301,29 @@ export default function PoseGame({ poseImages }: { poseImages: string[] }) {
 
           {/* show current pose index */}
           {started && phase === "webcam" && (
-            <div className="webcam-phase-info">
-              <div className="level-indicator">Level {level}</div>
-                <div className="pose-counter">
-                  Pose {poseIndex + 1} / {level}
-                </div>
-              <div className="countdown-display">
-                Time left: <span className="countdown-number">{webcamCountdown}s</span>
+            <>
+              <div className="pose-step-overlay" aria-hidden="true">
+                <span>{poseIndex + 1}</span>
               </div>
-              {webcamPhaseDone && poseMatched !== null && (
-                <div className={poseMatched ? "result-passed" : "result-failed"}>
-                  {poseMatched ? "✓ Match! Next level..." : "✗ Not matched. Game Over!"}
+              <div className="webcam-phase-info">
+                <div className="level-indicator">Level {level}</div>
+                  <div className="pose-counter">
+                    Pose {poseIndex + 1} / {level}
+                  </div>
+                <div className="countdown-display">
+                  Time left: <span className="countdown-number">{webcamCountdown}s</span>
                 </div>
-              )}
-            </div>
+                {webcamPhaseDone && poseMatched !== null && (
+                  <div className={poseMatched ? "result-passed" : "result-failed"}>
+                    {poseMatched
+                      ? poseIndex + 1 < currentLevelPoses.length
+                        ? "✓ Match! Next pose..."
+                        : "✓ Match! Next level..."
+                      : "✗ Not matched. Game Over!"}
+                  </div>
+                )}
+              </div>
+            </>
           )}
 
           {/* welcome message */}
@@ -292,6 +340,7 @@ export default function PoseGame({ poseImages }: { poseImages: string[] }) {
               >
                 {isWebcamReady ? "START" : "LOADING CAMERA..."}
               </button>
+              <Link to="/" className="start-button">BACK TO MENU</Link>
             </div>
           )}
         </div>
@@ -319,7 +368,7 @@ export default function PoseGame({ poseImages }: { poseImages: string[] }) {
             
             <div className="game-results-container">
               <h3>Score: {level - 1}</h3>
-              {selectedPoses.map((pose, idx) => (
+              {selectedPoses.map((_, idx) => (
                 <div key={idx} className="result-item">
                   <div>Pose {idx + 1}</div>
                   <div>Similarity: {((similarityResults[idx] ?? 0) * 100).toFixed(1)}%</div>
@@ -357,6 +406,7 @@ export default function PoseGame({ poseImages }: { poseImages: string[] }) {
                     setPhase("idle");
                     setLevel(1);
                     setPoseIndex(0);
+                    setCurrentLevelPoses([]);
                     setSelectedPoses([]);
                     setSimilarityResults([]);
                     setPlayerName("");
