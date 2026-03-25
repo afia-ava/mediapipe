@@ -1,6 +1,10 @@
-# MediaPipe Pose Detection App
+# Kinesthetic Games
 
-A React 19 + TypeScript + Vite application featuring pose detection using MediaPipe, with React Router navigation and Supabase backend.
+A collection of movement-based interactive games designed to blend physical activity with digital gameplay. Instead of traditional keyboard or controller input, these games use body movement as the primary interaction, creating a more immersive and active gaming experience.
+
+## Inspiration
+
+This project is an extended version of a the statuesque game I made with my friends at a hackathon. I wanted to take the application to a next step and go for typescript and tailwind css!
 
 ## Tech Stack
 
@@ -10,34 +14,6 @@ A React 19 + TypeScript + Vite application featuring pose detection using MediaP
 - **React Router** - Client-side routing
 - **Supabase** - Backend services and database
 - **MediaPipe** - Pose detection and computer vision
-
-## Project Structure
-
-```
-mediapipe/
-├── public/              # Static assets
-├── src/
-│   ├── assets/          # Images, poses, and resources
-│   ├── game/            # Game components
-│   │   ├── Leaderboard.tsx
-│   │   └── PoseGame.tsx
-│   ├── lib/             # External service clients
-│   │   └── supabase.ts
-│   ├── page/            # Page-level components
-│   │   └── GamePage.tsx
-│   ├── pose-detection/  # Webcam and pose detection
-│   │   ├── types.ts
-│   │   └── Webcam.tsx
-│   ├── pose-utils/      # Pose comparison utilities
-│   │   └── poseComparison.ts
-│   ├── App.tsx          # Root component
-│   ├── main.tsx         # Application entry point
-│   └── index.css        # Global styles
-├── index.html
-├── package.json
-├── tsconfig.json
-└── vite.config.ts
-```
 
 ## Getting Started
 
@@ -83,21 +59,6 @@ Preview production build:
 ```bash
 npm run preview
 ```
-
-## Features
-
-- **Pose Detection**: Real-time webcam-based pose detection using MediaPipe
-- **Game Mode**: Statuesque game with pose matching
-- **Leaderboard**: Track and display high scores using Supabase
-- **Responsive Design**: Mobile-friendly interface
-
-## Next Steps
-
-1. Configure Supabase database tables for leaderboard
-2. Implement MediaPipe pose detection initialization
-3. Add pose comparison algorithms
-4. Create pose reference images in `src/assets/`
-5. Customize game rules and scoring logic
 
 ## License
 
