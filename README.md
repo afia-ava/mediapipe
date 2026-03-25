@@ -2,6 +2,8 @@
 
 A collection of movement-based interactive games designed to blend physical activity with digital gameplay. Instead of traditional keyboard or controller input, these games use body movement as the primary interaction, creating a more immersive and active gaming experience.
 
+![Kinesthetic Games](src/assets/kinesthetic-games.png)
+
 ## Inspiration
 
 This project is an extended version of a the statuesque game I made with my friends at a hackathon. I wanted to take the application to a next step and go for typescript and tailwind css!
