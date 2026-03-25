@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import {WebcamCapture, type WebcamCaptureHandle } from "../../pose-detection/WebcamCapture";
-import { isMouthOpen } from "../../pose-utils";
 import flappyBirdSprite from "./assets/flappy bird.png";
 
 // game constants
@@ -9,11 +8,8 @@ const MAX_GRAVITY = 0.28;
 const JUMP_STRENGTH = -4.5;
 const PIPE_SPEED = 2;
 const PIPE_SPAWN_RATE = 5000;
-const MIN_PIPE_DISTANCE = 500;
-const BIRD_X = 50;
 const PIPE_GAP = 200;
 const PIPE_WIDTH = 60;
-const JUMP_COOLDOWN = 300; 
 
 interface GamePageProps {
     onGameOver: (score: number) => void;
@@ -21,9 +17,6 @@ interface GamePageProps {
 
 export default function GamePage({ onGameOver }: GamePageProps) 
 {
-    const [birdX, setBirdX] = useState(BIRD_X);
-    const birdXRef = useRef(BIRD_X);
-    const birdVX = useRef(0);
     // Bird stays fixed at center
     const webcamRef = useRef<WebcamCaptureHandle>(null);
     const [birdY, setBirdY] = useState(300);
@@ -36,22 +29,16 @@ export default function GamePage({ onGameOver }: GamePageProps)
     const lastPipeSpawn = useRef<number>(0);
     const pipeIdCounter = useRef<number>(0);
     const [isMouthCurrentlyOpen, setIsMouthCurrentlyOpen] = useState(false);
-    const lastJumpTimeRef = useRef<number>(0);
-    const [webcamReady, setWebcamReady] = useState(false);
 
     useEffect(() => {
         webcamRef.current?.start();
         let animationFrameId: number;
         let webcamBecameReady = false;
-        let lastTime = performance.now();
-        const update = (now: number) => {
-            const delta = Math.min((now - lastTime) / 16.67, 2); // normalize to ~60fps, cap delta
-            lastTime = now;
+        const update = () => {
             // Check if webcam is ready
             if (!webcamBecameReady && webcamRef.current?.isRunning()) {
                 webcamBecameReady = true;
                 lastPipeSpawn.current = Date.now(); // Reset pipe spawn timer 
-                setWebcamReady(true);
 
                 setPipes([
                     {
@@ -71,14 +58,15 @@ export default function GamePage({ onGameOver }: GamePageProps)
 
             //mouth detection jump
             const faceResult = webcamRef.current?.getFaceResult();
-            const mouthOpenValue = faceResult?.faceBlendshapes?.[0]?.categories?.find(c => c.categoryName === "jawOpen")?.score || 0;
+            const mouthOpenValue =
+                faceResult?.faceBlendshapes?.[0]?.categories?.find(
+                    (c: { categoryName?: string; score?: number }) => c.categoryName === "jawOpen"
+                )?.score || 0;
             setIsMouthCurrentlyOpen(mouthOpenValue > 0.3);
 
             if (mouthOpenValue > 0.3 && !wasMouthOpenRef.current && birdVelocity.current >= 0) {
                 const scaledJump = JUMP_STRENGTH * (1 + mouthOpenValue); 
                 birdVelocity.current = scaledJump;
-                birdVX.current = 2.5;
-                lastJumpTimeRef.current = Date.now();
             }
             wasMouthOpenRef.current = mouthOpenValue > 0.3;
             
