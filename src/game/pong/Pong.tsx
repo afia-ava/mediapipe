@@ -1,5 +1,5 @@
 import { useRef, useEffect } from "react";
-import "./Pong.css";
+import "./pong.css";
 
 
 interface PongProps {
